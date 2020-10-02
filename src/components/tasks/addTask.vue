@@ -26,24 +26,25 @@ export default {
         addTask: function() {
             if(this.name != "" && this.person != "" && this.room != "" && this.number != "") {
 
-            var json = new Object();
-            json.name = this.name;
-            json.personID = this.person;
-            json.roomID = this.room;
-            json.period = this.period;
+                var json = new Object();
+                json.name = this.name;
+                json.personID = this.person;
+                json.roomID = this.room;
+                json.period = this.period;
 
-            if(this.comment != "") json.comment = this.comment;
+                if(this.comment != "") json.comment = this.comment;
 
-            const requestOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(json)
-            };
+                const requestOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(json)
+                };
 
 
-            fetch("http://wolleserver.local:2400/task", requestOptions)
-                .then(response => response.json())
-                .then(data => console.log(data));
+                fetch("http://wolleserver.local:2400/task", requestOptions)
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .then(() => this.$root.$emit("refreshTasks"));
             } else alert("Sommige verplichten velden zijn niet ingevuld!");
         }
     }

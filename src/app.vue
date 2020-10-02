@@ -29,6 +29,7 @@ export default {
             this.respAvail = true;
             this.tasks = data;
         });
+        
         fetch("http://wolleserver.local:2400/person")
         .then(resp => resp.json())
         .then(data => {
@@ -41,6 +42,42 @@ export default {
             this.respAvail = true;
             this.rooms = data;
         });
+    },
+    mounted() {
+        this.$root.$on('refreshTasks', () => {
+            fetch("http://wolleserver.local:2400/task")
+                .then(resp => resp.json())
+                .then(data => {
+                    this.respAvail = true;
+                    this.tasks = data;
+                });
+        });
+        this.$root.$on('refreshRooms', () => {
+            fetch("http://wolleserver.local:2400/room")
+                .then(resp => resp.json())
+                .then(data => {
+                    this.respAvail = true;
+                    this.rooms = data;
+                });
+        });
+        this.$root.$on('refreshPeople', () => {
+            fetch("http://wolleserver.local:2400/person")
+                .then(resp => resp.json())
+                .then(data => {
+                    this.respAvail = true;
+                    this.people = data;
+                });
+        });
     }
 };
 </script>
+
+<style>
+    * {
+        font-family: 'Montserrat', sans-serif;
+    }  
+
+    h1 {
+        background-color: dodgerblue;
+    }
+</style>
