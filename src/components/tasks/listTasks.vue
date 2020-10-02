@@ -1,31 +1,15 @@
 <template>
     <div>
-        <div v-for="task in tasks" v-bind:key="task._id">
-            <h2>{{ task.name }}</h2>
-            <p>{{ formatDate(task.finished[task.finished.length - 1]) }}</p>
-            <p>{{ idToName(task.personID, people) }}</p>
-            <p>{{ idToName(task.roomID, rooms) }}</p>
-            <p>{{ task.comment }}</p>
-        </div>
+        <task v-for="task in tasks" v-bind:key="task._id" v-bind:task="task" v-bind:people="people" v-bind:rooms="rooms"/>
     </div>
 </template>
 
 <script>
+import task from "./task.vue"
+
 export default {
     name: "tasks",
+    components: { task },
     props: ['tasks', 'rooms', 'people'],
-    methods: {
-        formatDate: function(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString("nl-NL", { weekday: "short", year: "numeric", month: 'long', day: 'numeric' });
-        },
-        idToName: function(id, arr) {
-            for (let el of arr) {
-                if (el._id === id) {
-                    return el.name;
-                }
-            }
-        }
-    }
 };
 </script>
