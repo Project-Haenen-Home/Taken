@@ -1,22 +1,23 @@
 <template>
     <div>
         <overlay :rooms="rooms" :people="people" />
-        <h1 style="margin: 0; padding: 20px; color: whitesmoke">{{ greeting }}</h1>
-        <tasks :tasks="tasks" :rooms="rooms" :people="people"/>
+        <titleBar />
+        <tasks id="main-content" :tasks="tasks" :rooms="rooms" :people="people"/>
+        <sidenav id="side-nav" :people="people"/>
     </div>
 </template>
 
 <script>
+import titleBar from "./components/titleBar.vue"
+import sidenav from "./components/sidenav.vue"
 import tasks from "./components/listTasks.vue"
 import overlay from "./components/overlay.vue"
 
 export default {
     name: "App",
-    components: { tasks, overlay },
+    components: { tasks, overlay, titleBar, sidenav },
     data() {
         return {
-            greeting: "Taken",
-
             tasks: [],
             rooms: [],
             people: []
@@ -81,7 +82,16 @@ export default {
         margin: 0;
     }
 
-    h1 {
-        background-color: dodgerblue;
+    #main-content {
+        margin-right: 16%;
+    }
+
+    #side-nav {
+        height: 100%;
+        width: 13%;
+        top: 90px;
+        right: 0;
+        border-left: 1px solid grey;
+        padding: 20px;
     }
 </style>

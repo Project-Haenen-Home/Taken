@@ -1,6 +1,8 @@
 <template>
-    <div id="taskContainer">
-        <task v-for="task in tasks" v-bind:key="task._id" v-bind:task="task" v-bind:people="people" v-bind:rooms="rooms"/>
+    <div>
+        <div id="taskContainer">
+            <task v-for="task in tasks" v-bind:key="task._id" v-bind:task="task" v-bind:people="people" v-bind:rooms="rooms"/>
+        </div>
     </div>
 </template>
 
