@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>{{ greeting }}</h1>
+        <h1 style="margin: 0">{{ greeting }}</h1>
         <task-adder v-bind:people="people" v-bind:rooms="rooms"/>
         <hr>
         <tasks v-bind:tasks="tasks" v-bind:people="people" v-bind:rooms="rooms"/>
@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import taskAdder from "./components/tasks/addTask.vue"
-import tasks from "./components/tasks/listTasks.vue"
+import taskAdder from "./components/addTask.vue"
+import tasks from "./components/listTasks.vue"
 
 export default {
     name: "App",
@@ -76,6 +76,10 @@ export default {
     * {
         font-family: 'Montserrat', sans-serif;
     }  
+
+    body {
+        margin: 0;
+    }
 
     h1 {
         background-color: dodgerblue;

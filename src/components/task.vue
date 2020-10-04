@@ -1,19 +1,32 @@
 <template>
-  <div id="task">
-        <div><span id="title">{{ task.name }}</span><deleteLogo class="logo clickable" @click="deleteItem(task._id)" /></div>
-        <div id="under-title">{{ formatDate(task.finished[task.finished.length - 1]) }}</div>
-        <div>{{ idToName(task.personID, people) }}</div>
-        <div>{{ idToName(task.roomID, rooms) }}</div>
+  <div class="task">
+        <div class="header">
+            <div>
+                <span id="title">{{ task.name }}</span>
+                <span style="float: right;">
+                    <editLogo class="logo clickable" />
+                    <deleteLogo class="logo clickable" @click="deleteItem(task._id)" />
+                </span>
+            </div>
+            <div id="under-title">
+                <span>{{ idToName(task.personID, people) }}</span>
+                <span>&nbsp;-&nbsp;</span>
+                <span>{{ idToName(task.roomID, rooms) }}</span>
+                <span>&nbsp;-&nbsp;</span>
+                <span>{{ formatDate(task.finished[task.finished.length - 1]) }}</span>
+            </div>
+        </div>
         <div>{{ task.comment }}</div>
   </div>
 </template>
 
 <script>
-import deleteLogo from "../../assets/delete.svg"
+import deleteLogo from "../assets/delete.svg"
+import editLogo from "../assets/pen.svg"
 
 export default {
     name: "task",
-    components: { deleteLogo },
+    components: { deleteLogo, editLogo },
     props: ['task', 'people', 'rooms'],
     methods: {
         formatDate: function(dateString) {
@@ -38,9 +51,16 @@ export default {
 </script>
 
 <style scoped>
-    #task {
-        width: 20%;
-        margin: 20px 10px;
+    .task {
+        height: 150px;
+        border: 2px solid;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .header {
+        padding-bottom: 20px;
     }
 
     #title {
@@ -59,7 +79,6 @@ export default {
         width: 28px;
         height: 28px;
         margin-right: 20px;
-        float: right;
     }
 
     .clickable {
