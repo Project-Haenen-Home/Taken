@@ -4,8 +4,8 @@
             <div>
                 <span id="title">{{ task.name }}</span>
                 <span style="float: right;">
-                    <editLogo class="logo clickable" />
-                    <deleteLogo class="logo clickable" @click="deleteItem(task._id)" />
+                    <editIcon class="logo clickable" />
+                    <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
                 </span>
             </div>
             <div id="under-title">
@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import deleteLogo from "../assets/delete.svg"
-import editLogo from "../assets/pen.svg"
+import deleteIcon from "../assets/delete.svg"
+import editIcon from "../assets/pen.svg"
 
 export default {
     name: "task",
-    components: { deleteLogo, editLogo },
+    components: { deleteIcon, editIcon },
     props: ['task', 'people', 'rooms'],
     methods: {
         formatDate: function(dateString) {
@@ -66,6 +66,7 @@ export default {
     #title {
         font-size: 24px;
         font-weight: bold;
+        font-family: 'Raleway', sans-serif;
     }
 
     #under-title {
