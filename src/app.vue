@@ -62,4 +62,8 @@ export default {
             display: none;
         }
     }
+
+    .clickable {
+        cursor: pointer;
+    }
 </style>
