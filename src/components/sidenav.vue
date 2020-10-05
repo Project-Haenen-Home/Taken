@@ -3,7 +3,7 @@
         <div class="filter">
             <div class="filter-head">Personen</div>
             <div class="filter-content">
-                <div v-for="person in people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id"><label :for="'c_' + person._id">{{person.name}}</label></div>
+                <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id"><label :for="'c_' + person._id">{{person.name}}</label></div>
             </div>
         </div>
         <div class="filter">
@@ -16,12 +16,15 @@
 </template>
 
 <script>
+import DBStore from "../stores/DBStore"
+
 export default {
     name: "sidenav",
-    props: ['people'],
     data() {
         return {
-            deadVal: 7
+            deadVal: 7,
+
+            DBStore: DBStore.data
         }
     },
     computed: {

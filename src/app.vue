@@ -1,13 +1,14 @@
 <template>
     <div>
-        <overlay :rooms="rooms" :people="people" />
+        <overlay/>
         <titleBar />
-        <tasks id="main-content" :tasks="tasks" :rooms="rooms" :people="people"/>
-        <sidenav id="side-nav" :people="people"/>
+        <tasks id="main-content"/>
+        <sidenav id="side-nav"/>
     </div>
 </template>
 
 <script>
+import DBStore from "./stores/DBStore"
 import titleBar from "./components/titleBar.vue"
 import sidenav from "./components/sidenav.vue"
 import tasks from "./components/listTasks.vue"
@@ -18,57 +19,11 @@ export default {
     components: { tasks, overlay, titleBar, sidenav },
     data() {
         return {
-            tasks: [],
-            rooms: [],
-            people: []
+            DBStore: DBStore.data
         };
     },
     created() {
-        fetch("http://wolleserver.local:2400/task")
-        .then(resp => resp.json())
-        .then(data => {
-            this.respAvail = true;
-            this.tasks = data;
-        });
-        
-        fetch("http://wolleserver.local:2400/person")
-        .then(resp => resp.json())
-        .then(data => {
-            this.respAvail = true;
-            this.people = data;
-        });
-        fetch("http://wolleserver.local:2400/room")
-        .then(resp => resp.json())
-        .then(data => {
-            this.respAvail = true;
-            this.rooms = data;
-        });
-    },
-    mounted() {
-        this.$root.$on('refreshTasks', () => {
-            fetch("http://wolleserver.local:2400/task")
-                .then(resp => resp.json())
-                .then(data => {
-                    this.respAvail = true;
-                    this.tasks = data;
-                });
-        });
-        this.$root.$on('refreshRooms', () => {
-            fetch("http://wolleserver.local:2400/room")
-                .then(resp => resp.json())
-                .then(data => {
-                    this.respAvail = true;
-                    this.rooms = data;
-                });
-        });
-        this.$root.$on('refreshPeople', () => {
-            fetch("http://wolleserver.local:2400/person")
-                .then(resp => resp.json())
-                .then(data => {
-                    this.respAvail = true;
-                    this.people = data;
-                });
-        });
+        DBStore.methods.getAll();
     }
 };
 </script>

@@ -9,9 +9,9 @@
                 </span>
             </div>
             <div id="under-title">
-                <span>{{ idToName(task.personID, people) }}</span>
+                <span>{{ idToName(task.personID, DBStore.people) }}</span>
                 <span>&nbsp;-&nbsp;</span>
-                <span>{{ idToName(task.roomID, rooms) }}</span>
+                <span>{{ idToName(task.roomID, DBStore.rooms) }}</span>
                 <span>&nbsp;-&nbsp;</span>
                 <span>{{ formatDate(task.finished[task.finished.length - 1]) }}</span>
             </div>
@@ -21,13 +21,19 @@
 </template>
 
 <script>
+import DBStore from "../stores/DBStore"
 import deleteIcon from "../assets/delete.svg"
 import editIcon from "../assets/pen.svg"
 
 export default {
     name: "task",
     components: { deleteIcon, editIcon },
-    props: ['task', 'people', 'rooms'],
+    props: ['task'],
+    data() {
+        return {
+            DBStore: DBStore.data
+        }
+    },
     methods: {
         formatDate: function(dateString) {
             const date = new Date(dateString);
@@ -44,7 +50,7 @@ export default {
             fetch("http://wolleserver.local:2400/task/" + id, { method: "DELETE" })
                 .then(response => response.json())
                 .then(data => console.log(data))
-                .then(() => this.$root.$emit("refreshTasks"));
+                .then(() => DBStore.methods.getTasks());
         }
     }
 }
