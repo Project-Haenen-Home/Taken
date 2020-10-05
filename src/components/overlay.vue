@@ -1,5 +1,5 @@
 <template>
-    <div id="overlay" @click="closeOverlay">
+    <div id="overlay">
         <div id="content">
             <closeIcon class="logo clickable" @click="closeOverlay" />
             <taskAdder @close="closeOverlay" :rooms="rooms" :people="people"/>

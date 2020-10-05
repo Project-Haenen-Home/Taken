@@ -16,6 +16,7 @@
                 <span>{{ formatDate(task.finished[task.finished.length - 1]) }}</span>
             </div>
         </div>
+        <div class="deadline"><progressBar :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/><span class="deadline-txt">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</span></div>
         <div>{{ task.comment }}</div>
   </div>
 </template>
@@ -25,9 +26,11 @@ import DBStore from "../stores/DBStore"
 import deleteIcon from "../assets/delete.svg"
 import editIcon from "../assets/pen.svg"
 
+import progressBar from "./elements/progressbar.vue"
+
 export default {
     name: "task",
-    components: { deleteIcon, editIcon },
+    components: { deleteIcon, editIcon, progressBar },
     props: ['task'],
     data() {
         return {
@@ -35,6 +38,18 @@ export default {
         }
     },
     methods: {
+        dealineString(date, period) {
+            const d = period - (new Date() - new Date(date)) / (1000 * 3600 * 24);
+            if(d > 1) return "Deadline over " + d.toFixed(0) + " dagen";
+            else if(d == 1) return "Deadline is morgen";
+            else if (d == -1) return "Deadline is gisteren verlopen";
+            else if(d < -1) return "Deadline is " + -d.toFixed(0) + " dagen geleden verlopen";
+            else "Deadline is vandaag";
+        },
+        deadlineProgress(date, period) {
+            const d = 100 * ((new Date() - new Date(date)) / (1000 * 3600 * 24)) / period;
+            return d.toFixed(0);
+        },
         formatDate: function(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString("nl-NL", { weekday: "short", year: "numeric", month: 'long', day: 'numeric' });
@@ -90,5 +105,14 @@ export default {
 
     .clickable {
         cursor: pointer;
+    }
+
+    .deadline {
+        display: flex;
+        align-content: center;
+    }
+
+    .deadline-txt {
+        margin-left: 10px;
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="taskContainer">
-            <task v-for="task in DBStore.tasks" v-bind:key="task._id" v-bind:task="task" v-bind:people="people" v-bind:rooms="rooms"/>
+            <task v-for="task in DBStore.tasks" v-bind:key="task._id" :task="task" />
         </div>
     </div>
 </template>
