@@ -44,7 +44,7 @@ export default {
             else if(d == 1) return "Deadline is morgen";
             else if (d == -1) return "Deadline is gisteren verlopen";
             else if(d < -1) return "Deadline is " + -d.toFixed(0) + " dagen geleden verlopen";
-            else "Deadline is vandaag";
+            else return "Deadline is vandaag";
         },
         deadlineProgress(date, period) {
             const d = 100 * ((new Date() - new Date(date)) / (1000 * 3600 * 24)) / period;

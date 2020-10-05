@@ -14,7 +14,10 @@ const DBStore = {
         getTasks(filter) {
             var query = "?";
             if(filter != null) {
-                if(filter.personID != null) query += "personID=" + filter.personID;
+                var qArr = [];
+                if(filter.personID != null && filter.personID != "") qArr.push("personID=" + filter.personID);
+                if(filter.roomID != null && filter.roomID != "") qArr.push("roomID=" + filter.roomID);
+                query += qArr.join("&");
             }
 
             fetch("http://wolleserver.local:2400/task" + query)

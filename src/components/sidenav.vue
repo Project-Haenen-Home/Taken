@@ -1,6 +1,12 @@
 <template>
     <div class="side-nav">
         <div class="filter">
+            <div class="filter-head">Kamers</div>
+            <div class="filter-content">
+                <select id="room" v-model="room" style="margin-top: 5px" @change="filterByRoom"><option selected value="">Alle kamers</option><option v-for="room in DBStore.rooms" :key="room._id" :value="room._id">{{ room.name }}</option></select>
+            </div>
+        </div>
+        <div class="filter">
             <div class="filter-head">Personen</div>
             <div class="filter-content">
                 <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label></div>
@@ -24,6 +30,12 @@ export default {
         return {
             checkVals: [],
             deadVal: 7,
+            room: "",
+
+            filter: {
+                personID: "",
+                roomID: ""
+            },
 
             DBStore: DBStore.data
         }
@@ -41,8 +53,12 @@ export default {
     },
     methods: {
         filterByPerson: function() {
-            if(this.checkVals.length != 0) DBStore.methods.getTasks({ personID: this.checkVals.join('|') });
-            else DBStore.methods.getTasks();
+            this.filter.personID = this.checkVals.join('|');
+            DBStore.methods.getTasks(this.filter);
+        },
+        filterByRoom:  function() {
+            this.filter.roomID = this.room;
+            DBStore.methods.getTasks(this.filter);
         }
     }
 }
