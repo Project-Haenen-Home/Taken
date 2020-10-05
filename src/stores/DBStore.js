@@ -15,7 +15,6 @@ const DBStore = {
             var query = "?";
             if(filter != null) {
                 if(filter.personID != null) query += "personID=" + filter.personID;
-                console.log(query);
             }
 
             fetch("http://wolleserver.local:2400/task" + query)

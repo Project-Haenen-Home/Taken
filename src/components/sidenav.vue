@@ -3,7 +3,7 @@
         <div class="filter">
             <div class="filter-head">Personen</div>
             <div class="filter-content">
-                <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" @click="filterByPerson(person._id)"><label :for="'c_' + person._id">{{person.name}}</label></div>
+                <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label></div>
             </div>
         </div>
         <div class="filter">
@@ -22,6 +22,7 @@ export default {
     name: "sidenav",
     data() {
         return {
+            checkVals: [],
             deadVal: 7,
 
             DBStore: DBStore.data
@@ -39,8 +40,9 @@ export default {
         }
     },
     methods: {
-        filterByPerson: function(id) {
-            DBStore.methods.getTasks({personID: id});
+        filterByPerson: function() {
+            if(this.checkVals.length != 0) DBStore.methods.getTasks({ personID: this.checkVals.join('|') });
+            else DBStore.methods.getTasks();
         }
     }
 }
