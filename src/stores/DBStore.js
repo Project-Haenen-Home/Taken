@@ -6,7 +6,7 @@ const DBStore = {
     },
     methods: {
         getAll() {
-            DBStore.methods.getTasks({personID: "5f765b70d1c959dca7c84e2d"});
+            DBStore.methods.getTasks();
             DBStore.methods.getRooms();
             DBStore.methods.getPeople();
         },
