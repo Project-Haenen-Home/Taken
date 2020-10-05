@@ -35,6 +35,7 @@ export default {
     }
 
     .progress {
+        border-radius: 5px;
         height: 100%;
         width: 0%;
         background-color: #be1c07;
