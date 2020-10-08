@@ -2,7 +2,9 @@ const DBStore = {
     data: {
         tasks: [],
         people: [],
-        rooms: []
+        rooms: [],
+
+        taskFilter: {}
     },
     methods: {
         getAll() {
@@ -11,12 +13,12 @@ const DBStore = {
             DBStore.methods.getPeople();
         },
 
-        getTasks(filter) {
+        getTasks() {
             var query = "?";
-            if(filter != null) {
+            if(DBStore.data.taskFilter != null) {
                 var qArr = [];
-                if(filter.personID != null && filter.personID != "") qArr.push("personID=" + filter.personID);
-                if(filter.roomID != null && filter.roomID != "") qArr.push("roomID=" + filter.roomID);
+                if(DBStore.data.taskFilter.personID != null && DBStore.data.taskFilter.personID != "") qArr.push("personID=" + DBStore.data.taskFilter.personID);
+                if(DBStore.data.taskFilter.roomID != null && DBStore.data.taskFilter.roomID != "") qArr.push("roomID=" + DBStore.data.taskFilter.roomID);
                 query += qArr.join("&");
             }
 
@@ -42,6 +44,8 @@ const DBStore = {
                     DBStore.data.rooms = data;
                 });
         }
+
+
     }
 };
 

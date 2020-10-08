@@ -1,10 +1,10 @@
 <template>
     <div>
-        <overlay/>
+        <overlay id="overlay" :current="currentOverlay" />
         <titleBar />
-        <tasks id="main-content"/>
-        <sidenav id="side-nav"/>
-        <lownav id="low-nav"/>
+        <tasks id="main-content" />
+        <sidenav id="side-nav" />
+        <lownav id="low-nav" />
     </div>
 </template>
 
@@ -21,11 +21,18 @@ export default {
     components: { tasks, overlay, titleBar, sidenav, lownav },
     data() {
         return {
+            currentOverlay: "",
+
             DBStore: DBStore.data
         };
     },
     created() {
         DBStore.methods.getAll();
+    },
+    mounted() {
+        this.$root.$on('openOverlay', (data) => {
+            this.currentOverlay = data;
+        })
     }
 };
 </script>
@@ -37,6 +44,10 @@ export default {
 
     body {
         margin: 0;
+    }
+
+    .hidden {
+        display: none;
     }
 
     #side-nav {

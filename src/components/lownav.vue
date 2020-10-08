@@ -2,13 +2,19 @@
     <div>
         <div class="pop-out hidden">
             <div id="roomPopOut" class="hidden">
-                <div class="pop-out-title">Kamers</div>
-                <div class="pop-out-item clickable" @click="filterByRoom('')">Alle kamers</div>
-                <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item clickable" @click="filterByRoom(room._id)">{{ room.name }}</div>
+                <div class="pop-out-title">Kamers<addIcon class="logo-small clickable" @click="$root.$emit('openOverlay', 'addRoom')" /></div>
+                <div class="pop-out-item">
+                    <input type="radio" id="r_all" name="room" value="all" @click="filterByRoom('')"><label for="r_all">Alle kamers</label>
+                </div>
+                <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item">
+                    <input type="radio" :id="'r_' + room._id" name="room" :value="room._id" @click="filterByRoom(room._id)"><label :for="'r_' + room._id">{{room.name}}</label>
+                </div>
             </div>
             <div id="personPopOut" class="hidden">
                 <div class="pop-out-title">Personen</div>
-                <div v-for="person in DBStore.people" :key="person._id" class="pop-out-item" ><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label></div>
+                <div v-for="person in DBStore.people" :key="person._id" class="pop-out-item" >
+                    <input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label>
+                </div>
             </div>
         </div>
         <div class="low-nav">
@@ -27,10 +33,11 @@ import DBStore from "../stores/DBStore"
 import roomIcon from "../assets/room.svg"
 import dotsIcon from "../assets/dots-menu.svg"
 import personIcon from "../assets/person.svg"
+import addIcon from "../assets/add.svg"
 
 export default {
     name: "lownav",
-    components: { roomIcon, dotsIcon, personIcon },
+    components: { roomIcon, dotsIcon, personIcon, addIcon },
     data() {
         return {
             checkVals: [],
@@ -82,13 +89,12 @@ export default {
             personPopOut.classList.toggle("hidden");
         },
         filterByPerson: function() {
-            this.filter.personID = this.checkVals.join('|');
-            DBStore.methods.getTasks(this.filter);
+            DBStore.data.taskFilter.personID = this.checkVals.join('|');
+            DBStore.methods.getTasks();
         },
         filterByRoom:  function(id) {
-            this.filter.roomID = id;
-            DBStore.methods.getTasks(this.filter);
-            this.toggle();
+            DBStore.data.taskFilter.roomID = id;
+            DBStore.methods.getTasks();
         }
     }
 }
@@ -117,6 +123,8 @@ export default {
     .pop-out-title {
         font-size: 20px;
         font-weight: 700;
+        display: flex;
+        align-items: center;
     }
 
     .pop-out-item {
@@ -141,6 +149,7 @@ export default {
         position: fixed;
         z-index: 1;
         overflow-x: hidden;
+        transition: bottom 300ms ease-out;
     }
 
     .low-nav-expanded {
@@ -157,12 +166,21 @@ export default {
         width: 24px;
         height: 24px;
         margin: 10px;
+
+        transition: width 310ms ease-out;
     }
 
     .menu-large {
         width: 30px;
         height: 30px;
         margin: 20px;
+    }
+
+    .logo-small {
+        width: 24px;
+        height: 24px;
+
+        margin-left: 10px;
     }
 
     .logo {

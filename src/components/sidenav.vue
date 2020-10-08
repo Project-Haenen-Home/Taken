@@ -1,7 +1,7 @@
 <template>
     <div class="side-nav">
         <div class="filter">
-            <div class="filter-head">Kamers</div>
+            <div class="filter-head">Kamers<addIcon class="logo clickable" @click="$root.$emit('openOverlay', 'addRoom')" /></div>
             <div class="filter-content">
                 <select id="room" v-model="room" style="margin-top: 5px" @change="filterByRoom"><option selected value="">Alle kamers</option><option v-for="room in DBStore.rooms" :key="room._id" :value="room._id">{{ room.name }}</option></select>
             </div>
@@ -12,7 +12,7 @@
                 <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label></div>
             </div>
         </div>
-        <div class="filter">
+        <div class="filter" hidden>
             <div class="filter-head">Deadline</div>
             <div class="filter-content">
                 <div class="filter-item"><input type="range" class="slider" id="dealineSlider" v-model="deadVal" min="1" max="31"><label for="dealineSlider">{{ deadComp }}</label></div>
@@ -24,8 +24,11 @@
 <script>
 import DBStore from "../stores/DBStore"
 
+import addIcon from "../assets/add.svg"
+
 export default {
     name: "sidenav",
+    components: { addIcon },
     data() {
         return {
             checkVals: [],
@@ -53,12 +56,12 @@ export default {
     },
     methods: {
         filterByPerson: function() {
-            this.filter.personID = this.checkVals.join('|');
-            DBStore.methods.getTasks(this.filter);
+            DBStore.data.taskFilter.personID = this.checkVals.join('|');
+            DBStore.methods.getTasks();
         },
         filterByRoom:  function() {
-            this.filter.roomID = this.room;
-            DBStore.methods.getTasks(this.filter);
+            DBStore.data.taskFilter.roomID = this.room;
+            DBStore.methods.getTasks();
         }
     }
 }
@@ -80,6 +83,9 @@ export default {
         font-size: 20px;
         font-weight: 700;
         font-family: 'Raleway', sans-serif;
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
     }
 
     .filter-content {
@@ -93,5 +99,12 @@ export default {
     .slider {
         width: 100px;
         margin-right: 10px;
+    }
+
+    .logo {
+        width: 24px;
+        height: 24px;
+
+        margin-left: 10px;
     }
 </style>

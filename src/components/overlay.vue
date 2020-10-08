@@ -1,8 +1,9 @@
 <template>
-    <div id="overlay">
+    <div id="overlay" class="hidden">
         <div id="content">
             <closeIcon class="logo clickable" @click="closeOverlay" />
-            <taskAdder @close="closeOverlay" :rooms="rooms" :people="people"/>
+            <taskAdder id="taskAdder" class="hidden" @close="closeOverlay" />
+            <roomAdder id="roomAdder" class="hidden" @close="closeOverlay" />
         </div>
     </div>
 </template>
@@ -10,15 +11,37 @@
 <script>
 import closeIcon from "../assets/close.svg"
 import taskAdder from "./editors/addTask.vue"
+import roomAdder from "./editors/addRoom.vue"
 
 export default {
     name: "overlay",
-    components: { taskAdder, closeIcon },
-    props: ['rooms', 'people'],
+    components: { taskAdder, roomAdder, closeIcon },
+    props: ['current'],
+    watch: {
+        current: function(newVal, oldVal) {
+            const overlay = document.querySelector("#overlay");
+            const taskAdd = document.querySelector("#taskAdder");
+            const roomAdd = document.querySelector("#roomAdder");
+
+            if(newVal == "addRoom") {
+                overlay.classList.remove("hidden");
+                roomAdd.classList.remove("hidden");
+            } else if(newVal == "addTask") {
+                overlay.classList.remove("hidden");
+                taskAdd.classList.remove("hidden");
+            }
+        }
+    },
     methods: {
         closeOverlay: function() {
             const overlay = document.querySelector("#overlay");
-            overlay.style.display = "none";
+            const taskAdd = document.querySelector("#taskAdder");
+            const roomAdd = document.querySelector("#roomAdder");
+
+            overlay.classList.add("hidden");
+            taskAdd.classList.add("hidden");
+            roomAdd.classList.add("hidden");
+            this.$root.$emit("openOverlay", "");
         }
     }
 }

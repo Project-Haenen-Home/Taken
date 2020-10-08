@@ -17,7 +17,6 @@ import DBStore from "../../stores/DBStore"
 
 export default {
     name: "addTask",
-    props: ['people', 'rooms'],
     data() {
         return {
             name: "",
