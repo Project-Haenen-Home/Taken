@@ -31,7 +31,6 @@ export default {
         height: 20px;
         border: 1px solid;
         border-radius: 5px;
-        margin-bottom: 10px;
     }
 
     .progress {

@@ -8,16 +8,20 @@
                     <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
                 </span>
             </div>
-            <div id="under-title">
+            <div class="under-title">
                 <span>{{ idToName(task.personID, DBStore.people) }}</span>
                 <span>&nbsp;-&nbsp;</span>
                 <span>{{ idToName(task.roomID, DBStore.rooms) }}</span>
-                <span>&nbsp;-&nbsp;</span>
-                <span>{{ formatDate(task.finished[task.finished.length - 1]) }}</span>
             </div>
         </div>
-        <div class="deadline"><progressBar :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/><span class="deadline-txt">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</span></div>
-        <div>{{ task.comment }}</div>
+        <div class="grid-container">
+            <div style="grid-column: 1; grid-row: 1">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</div>
+            <progressBar style="grid-column: 1; grid-row: 2" :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/>
+            <div class="under-title" style="grid-column: 1; grid-row: 3; margin: 5px 0 0 0">Laatst voltooid: {{ formatDate(task.finished[task.finished.length - 1]) }}</div>
+
+            <div class="finishItem"><button class="finishButton" @click="finishTask(task._id)">Gedaan!</button></div>
+        </div>
+        <!-- <div>{{ task.comment }}</div> -->
   </div>
 </template>
 
@@ -66,6 +70,21 @@ export default {
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .then(() => DBStore.methods.getTasks());
+        },
+        finishTask(id) {
+            const requestOptions = {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ finished: true })
+            };
+
+
+            fetch("http://wolleserver.local:2400/task/" + id, requestOptions)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .then(() => {
+                    DBStore.methods.getTasks();
+                });
         }
     }
 }
@@ -73,15 +92,14 @@ export default {
 
 <style scoped>
     .task {
-        height: 150px;
         border: 2px solid;
         border-radius: 5px;
-        padding: 10px;
+        padding: 15px;
         margin: 10px 0;
     }
 
     .header {
-        padding-bottom: 20px;
+        padding-bottom: 10px;
     }
 
     #title {
@@ -90,29 +108,42 @@ export default {
         font-family: 'Raleway', sans-serif;
     }
 
-    #under-title {
+    .under-title {
         font-size: 12px;
         color:darkslategray;
         font-style: italic;
         margin: 2.5px 0 0 5px;
     }
 
+    .grid-container {
+        display: grid;
+        gap: 12px;
+    }
+
     .logo {
         width: 28px;
         height: 28px;
-        margin-right: 20px;
+        margin-right: 8px;
     }
 
     .clickable {
         cursor: pointer;
     }
 
-    .deadline {
-        display: flex;
-        align-content: center;
-    }
-
     .deadline-txt {
         margin-left: 10px;
+    }
+
+    .finishItem {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        display: flex;
+        align-content: flex-end;
+        justify-content: center;
+    }
+
+    .finishButton {
+        width: 90%;
+        height: 90%;
     }
 </style>

@@ -32,7 +32,7 @@ export default {
             margin: 10px 20px 0 20px;
             display: grid;
             gap: 0 15px;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
     }
 </style>
