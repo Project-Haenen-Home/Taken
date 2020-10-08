@@ -1,7 +1,8 @@
 <template>
     <div>
-        <overlay id="overlay" :current="currentOverlay" />
+        <overlay id="overlay" :current="currentOverlay" :contentID="overlayID" />
         <titleBar />
+        <filterBay />
         <tasks id="main-content" />
         <sidenav id="side-nav" />
         <lownav id="low-nav" />
@@ -9,6 +10,7 @@
 </template>
 
 <script>
+import filterBay from "./components/filterBay.vue"
 import lownav from "./components/lownav.vue"
 import DBStore from "./stores/DBStore"
 import titleBar from "./components/titleBar.vue"
@@ -18,10 +20,11 @@ import overlay from "./components/overlay.vue"
 
 export default {
     name: "App",
-    components: { tasks, overlay, titleBar, sidenav, lownav },
+    components: { tasks, overlay, titleBar, sidenav, lownav, filterBay },
     data() {
         return {
             currentOverlay: "",
+            overlayID: "",
 
             DBStore: DBStore.data
         };
@@ -31,7 +34,10 @@ export default {
     },
     mounted() {
         this.$root.$on('openOverlay', (data) => {
-            this.currentOverlay = data;
+            const j = JSON.parse(data);
+
+            this.overlayID = j.id;
+            this.currentOverlay = j.overlay;
         })
     }
 };
@@ -39,6 +45,7 @@ export default {
 
 <style>
     * {
+        box-sizing: border-box;
         font-family: 'Montserrat', sans-serif;
     }  
 
@@ -56,7 +63,7 @@ export default {
 
     @media only screen and (min-width: 1400px) {
         #main-content {
-            margin-right: 16%;
+            margin-right: 13%;
         }
 
         #side-nav {

@@ -2,21 +2,29 @@
     <div>
         <div class="pop-out hidden">
             <div id="roomPopOut" class="hidden">
-                <div class="pop-out-title">Kamers<addIcon class="logo-small clickable" @click="$root.$emit('openOverlay', 'addRoom')" /></div>
-                <div class="pop-out-item">
-                    <input type="radio" id="r_all" name="room" value="all" @click="filterByRoom('')"><label for="r_all">Alle kamers</label>
+                <div class="pop-out-title">
+                    <div>Kamers</div>
+                    <settingsIcon class="logo-small clickable" @click="openOverlay" />
                 </div>
+
+                <div class="pop-out-item">
+                    <input type="radio" id="r_all" name="room" v-model="DBStore.taskFilter.roomID" value="0" @change="DBMethods.getTasks" checked><label for="r_all">Alle kamers</label>
+                </div>
+
                 <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item">
-                    <input type="radio" :id="'r_' + room._id" name="room" :value="room._id" @click="filterByRoom(room._id)"><label :for="'r_' + room._id">{{room.name}}</label>
+                    <input type="radio" :id="'r_' + room._id" name="room" v-model="DBStore.taskFilter.roomID" :value="room._id" @change="DBMethods.getTasks"><label :for="'r_' + room._id">{{room.name}}</label>
                 </div>
             </div>
+
             <div id="personPopOut" class="hidden">
                 <div class="pop-out-title">Personen</div>
+
                 <div v-for="person in DBStore.people" :key="person._id" class="pop-out-item" >
-                    <input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label>
+                    <input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="DBStore.taskFilter.personID" @change="DBMethods.getTasks"><label :for="'c_' + person._id">{{person.name}}</label>
                 </div>
             </div>
         </div>
+
         <div class="low-nav">
             <div class="container">
                 <roomIcon id="roomIcon" class="logo clickable hidden" @click="toggleRoomPop"/>
@@ -33,21 +41,23 @@ import DBStore from "../stores/DBStore"
 import roomIcon from "../assets/room.svg"
 import dotsIcon from "../assets/dots-menu.svg"
 import personIcon from "../assets/person.svg"
-import addIcon from "../assets/add.svg"
+import settingsIcon from "../assets/settings.svg"
 
 export default {
     name: "lownav",
-    components: { roomIcon, dotsIcon, personIcon, addIcon },
+    components: { roomIcon, dotsIcon, personIcon, settingsIcon },
     data() {
         return {
             checkVals: [],
+            roomID: "",
 
             filter: {
                 personID: "",
                 roomID: ""
             },
 
-            DBStore: DBStore.data
+            DBStore: DBStore.data,
+            DBMethods: DBStore.methods
         }
     },
     methods: {
@@ -88,13 +98,8 @@ export default {
             else roomPopOut.classList.add("hidden");
             personPopOut.classList.toggle("hidden");
         },
-        filterByPerson: function() {
-            DBStore.data.taskFilter.personID = this.checkVals.join('|');
-            DBStore.methods.getTasks();
-        },
-        filterByRoom:  function(id) {
-            DBStore.data.taskFilter.roomID = id;
-            DBStore.methods.getTasks();
+        openOverlay: function() {
+            this.$root.$emit('openOverlay', '{"overlay": "roomSettings"}')
         }
     }
 }
@@ -125,6 +130,7 @@ export default {
         font-weight: 700;
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
 
     .pop-out-item {

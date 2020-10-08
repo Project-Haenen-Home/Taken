@@ -1,28 +1,28 @@
 <template>
-  <div class="task">
-        <div class="header">
-            <div>
-                <span id="title">{{ task.name }}</span>
-                <span style="float: right;">
-                    <editIcon class="logo clickable" />
-                    <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
-                </span>
+    <div class="task">
+            <div class="header">
+                <div>
+                    <span id="title">{{ task.name }}</span>
+                    <span style="float: right;">
+                        <editIcon class="logo clickable" @click="openEditor(task._id)"/>
+                        <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
+                    </span>
+                </div>
+                <div class="under-title">
+                    <span>{{ idToName(task.personID, DBStore.people) }}</span>
+                    <span>&nbsp;-&nbsp;</span>
+                    <span>{{ idToName(task.roomID, DBStore.rooms) }}</span>
+                </div>
             </div>
-            <div class="under-title">
-                <span>{{ idToName(task.personID, DBStore.people) }}</span>
-                <span>&nbsp;-&nbsp;</span>
-                <span>{{ idToName(task.roomID, DBStore.rooms) }}</span>
-            </div>
-        </div>
-        <div class="grid-container">
-            <div style="grid-column: 1; grid-row: 1">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</div>
-            <progressBar style="grid-column: 1; grid-row: 2" :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/>
-            <div class="under-title" style="grid-column: 1; grid-row: 3; margin: 5px 0 0 0">Laatst voltooid: {{ formatDate(task.finished[task.finished.length - 1]) }}</div>
+            <div class="grid-container">
+                <div style="grid-column: 1; grid-row: 1">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</div>
+                <progressBar style="grid-column: 1; grid-row: 2" :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/>
+                <div class="under-title" style="grid-column: 1; grid-row: 3; margin: 5px 0 0 0">Laatst voltooid: {{ formatDate(task.finished[task.finished.length - 1]) }}</div>
 
-            <div class="finishItem"><button class="finishButton" @click="finishTask(task._id)">Gedaan!</button></div>
-        </div>
-        <!-- <div>{{ task.comment }}</div> -->
-  </div>
+                <div class="finishItem"><div class="finishButton clickable" @click="finishTask(task._id)">Gedaan!</div></div>
+            </div>
+            <!-- <div>{{ task.comment }}</div> -->
+    </div>
 </template>
 
 <script>
@@ -82,9 +82,10 @@ export default {
             fetch("http://wolleserver.local:2400/task/" + id, requestOptions)
                 .then(response => response.json())
                 .then(data => console.log(data))
-                .then(() => {
-                    DBStore.methods.getTasks();
-                });
+                .then(() => DBStore.methods.getTasks());
+        },
+        openEditor: function(id) {
+            this.$root.$emit('openOverlay', '{ "overlay": "editTask", "id": "' + id + '" }');
         }
     }
 }
@@ -138,12 +139,21 @@ export default {
         grid-column: 2;
         grid-row: 1 / span 3;
         display: flex;
-        align-content: flex-end;
-        justify-content: center;
+        align-items: center;
+        justify-content: flex-end;
+        margin-right: 20px;
     }
 
     .finishButton {
+        border: 2px solid;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: linen;
         width: 90%;
         height: 90%;
+        min-width: 80px;
+        max-width: 150px;
     }
 </style>

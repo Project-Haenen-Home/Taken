@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div id="title">Taak toevoegen</div>
+        <div id="title">Taak wijzigen</div>
         <table>
             <tr><td><label for="name">Naam: </label></td> <td><input id="name" type="text" v-model="name"/></td></tr>
             <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{ person.name }}</option></select></td></tr>
             <tr><td><label for="room">Kamer: </label></td> <td><select id="room" v-model="room"><option v-for="room in DBStore.rooms" v-bind:key="room._id" v-bind:value="room._id">{{ room.name }}</option></select></td></tr>
             <tr><td><label for="period">Periode: </label></td> <td><input id="period" v-model="period" type="number" min="1" step="1"/><span>&nbsp;Dagen</span></td></tr>
             <tr><td><label for="comment">Notitie: </label></td> <td><textarea id="comment" v-model="comment" rows="4" ></textarea></td></tr>
-            <tr><td></td><td><button @click="addTask">Voeg toe</button></td></tr>
+            <tr><td></td><td><button @click="editTask">Wijzig</button></td></tr>
         </table>
     </div>
 </template>
@@ -16,7 +16,21 @@
 import DBStore from "../../stores/DBStore"
 
 export default {
-    name: "addTask",
+    name: "editTask",
+    props: ['taskID'],
+    watch: {
+        taskID: function(newID, oldID) {
+            this.DBStore.tasks.forEach(el => {
+                if(el._id == newID) {
+                    this.name = el.name;
+                    this.person = el.personID;
+                    this.room = el.roomID;
+                    this.period = el.period;
+                    this.comment = el.comment;
+                }
+            });
+        }
+    },
     data() {
         return {
             name: "",
@@ -29,7 +43,7 @@ export default {
         }
     },
     methods: {
-        addTask: function() {
+        editTask: function() {
             if(this.name != "" && this.person != "" && this.room != "" && this.number != "") {
 
                 var json = new Object();
@@ -41,13 +55,13 @@ export default {
                 if(this.comment != "") json.comment = this.comment;
 
                 const requestOptions = {
-                    method: "POST",
+                    method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(json)
                 };
 
 
-                fetch("http://wolleserver.local:2400/task", requestOptions)
+                fetch("http://wolleserver.local:2400/task/" + this.taskID, requestOptions)
                     .then(response => response.json())
                     .then(data => console.log(data))
                     .then(() => {

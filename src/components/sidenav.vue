@@ -1,15 +1,15 @@
 <template>
     <div class="side-nav">
         <div class="filter">
-            <div class="filter-head">Kamers<addIcon class="logo clickable" @click="$root.$emit('openOverlay', 'addRoom')" /></div>
+            <div class="filter-head">Kamers<settingsIcon class="logo clickable" @click="openOverlay" /></div>
             <div class="filter-content">
-                <select id="room" v-model="room" style="margin-top: 5px" @change="filterByRoom"><option selected value="">Alle kamers</option><option v-for="room in DBStore.rooms" :key="room._id" :value="room._id">{{ room.name }}</option></select>
+                <select id="room" v-model="DBStore.taskFilter.roomID" style="margin-top: 5px" @change="DBMethods.getTasks"><option selected value="0">Alle kamers</option><option v-for="room in DBStore.rooms" :key="room._id" :value="room._id">{{ room.name }}</option></select>
             </div>
         </div>
         <div class="filter">
             <div class="filter-head">Personen</div>
             <div class="filter-content">
-                <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="checkVals" @change="filterByPerson"><label :for="'c_' + person._id">{{person.name}}</label></div>
+                <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="DBStore.taskFilter.personID" @change="DBMethods.getTasks"><label :for="'c_' + person._id">{{person.name}}</label></div>
             </div>
         </div>
         <div class="filter" hidden>
@@ -18,6 +18,9 @@
                 <div class="filter-item"><input type="range" class="slider" id="dealineSlider" v-model="deadVal" min="1" max="31"><label for="dealineSlider">{{ deadComp }}</label></div>
             </div>
         </div>
+        <div class="filter">
+            <div class="filter-head clickable" style="margin-top: 20px" @click="openAdder">Nieuwe taak<addIcon class="logo"/></div>
+        </div>
     </div>
 </template>
 
@@ -25,13 +28,14 @@
 import DBStore from "../stores/DBStore"
 
 import addIcon from "../assets/add.svg"
+import settingsIcon from "../assets/settings.svg"
 
 export default {
     name: "sidenav",
-    components: { addIcon },
+    components: { addIcon, settingsIcon },
     data() {
         return {
-            checkVals: [],
+            testVals: [],
             deadVal: 7,
             room: "",
 
@@ -40,7 +44,8 @@ export default {
                 roomID: ""
             },
 
-            DBStore: DBStore.data
+            DBStore: DBStore.data,
+            DBMethods: DBStore.methods
         }
     },
     computed: {
@@ -55,13 +60,11 @@ export default {
         }
     },
     methods: {
-        filterByPerson: function() {
-            DBStore.data.taskFilter.personID = this.checkVals.join('|');
-            DBStore.methods.getTasks();
+        openOverlay: function() {
+            this.$root.$emit('openOverlay', '{"overlay": "roomSettings"}')
         },
-        filterByRoom:  function() {
-            DBStore.data.taskFilter.roomID = this.room;
-            DBStore.methods.getTasks();
+        openAdder: function() {
+            this.$root.$emit('openOverlay', '{"overlay": "addTask"}');
         }
     }
 }
@@ -102,8 +105,8 @@ export default {
     }
 
     .logo {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
 
         margin-left: 10px;
     }

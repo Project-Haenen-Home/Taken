@@ -15,7 +15,7 @@ export default {
     #header {
         background-color: dodgerblue;
         padding: 20px;
-        height: 50px;
+        height: 90px;
     }
 
     #title {

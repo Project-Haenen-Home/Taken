@@ -24,15 +24,15 @@ export default {
 
 <style scoped>
     #taskContainer {
-        margin: 20px 10px 0 10px;
+        margin: 0 10px 0 10px;
     }
 
     @media only screen and (min-width: 600px) {
         #taskContainer {
-            margin: 10px 20px 0 20px;
+            margin: 0 20px 0 20px;
             display: grid;
             gap: 0 15px;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         }
     }
 </style>
