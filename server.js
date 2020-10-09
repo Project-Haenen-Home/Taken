@@ -10,3 +10,7 @@ app.get("/", (req, res) => {
 app.get("/main.js", (req, res) => {
      res.sendFile(__dirname + "/dist/main.js");
 });
+
+app.get("/style.css", (req, res) => {
+    res.sendFile(__dirname + "/dist/style.css");
+});

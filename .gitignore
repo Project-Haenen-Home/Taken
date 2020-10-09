@@ -80,6 +80,9 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
+prod_dist/*.js
+prod_dist/*.css
+prod_dist/img
 dist/*.js
 dist/img
 
