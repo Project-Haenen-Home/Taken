@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="pop-out hidden">
+        <div id="popOut" class="pop-out hidden">
             <div id="roomPopOut" class="hidden">
                 <div class="pop-out-title">
                     <div>Kamers</div>
@@ -45,6 +45,7 @@ import settingsIcon from "../assets/settings.svg"
 
 export default {
     name: "lownav",
+    props: ['current'],
     components: { roomIcon, dotsIcon, personIcon, settingsIcon },
     data() {
         return {
@@ -58,6 +59,17 @@ export default {
 
             DBStore: DBStore.data,
             DBMethods: DBStore.methods
+        }
+    },
+    watch: {
+        current: function(newVal, oldVal) {
+            if(newVal == "roomFilter") {
+                this.toggle();
+                this.toggleRoomPop();
+            } else if(newVal == "personFilter") {
+                this.toggle();
+                this.togglePersonPop();
+            }
         }
     },
     methods: {
@@ -74,6 +86,7 @@ export default {
                 popOut.classList.add("hidden");
                 roomPopOut.classList.add("hidden");
                 personPopOut.classList.add("hidden");
+                this.$root.$emit("openPopOut","");
             }
             lowNav.classList.toggle("low-nav-expanded");
             room.classList.toggle("hidden");
@@ -108,6 +121,7 @@ export default {
 <style scoped>
     .pop-out {
         padding: 20px;
+        max-height: 75vh;
         width: 60%;
         border-radius: 10px;
 

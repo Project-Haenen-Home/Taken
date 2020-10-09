@@ -1,9 +1,9 @@
 <template>
     <div class="task">
             <div class="header">
-                <div>
+                <div style="position: relative;">
                     <span id="title">{{ task.name }}</span>
-                    <span style="float: right;">
+                    <span class="logo-bay">
                         <editIcon class="logo clickable" @click="openEditor(task._id)"/>
                         <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
                     </span>
@@ -104,9 +104,17 @@ export default {
     }
 
     #title {
+        display: block;
         font-size: 24px;
         font-weight: bold;
         font-family: 'Raleway', sans-serif;
+        max-width: 350px;
+    }
+
+    .logo-bay {
+        position: absolute;
+        top: 0;
+        right: 10px
     }
 
     .under-title {

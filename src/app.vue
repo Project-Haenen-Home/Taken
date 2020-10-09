@@ -5,7 +5,7 @@
         <filterBay />
         <tasks id="main-content" />
         <sidenav id="side-nav" />
-        <lownav id="low-nav" />
+        <lownav id="low-nav" :current="currentPopOut"/>
     </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
         return {
             currentOverlay: "",
             overlayID: "",
+            currentPopOut: "",
 
             DBStore: DBStore.data
         };
@@ -38,6 +39,9 @@ export default {
 
             this.overlayID = j.id;
             this.currentOverlay = j.overlay;
+        })
+        this.$root.$on('openPopOut', (data) => {
+            this.currentPopOut = data;
         })
     }
 };

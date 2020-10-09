@@ -4,6 +4,8 @@ const DBStore = {
         people: [],
         rooms: [],
 
+        deadSlider: "12",
+
         taskFilter: { personID: [], roomID: "0", dayFilter: null}
     },
     methods: {

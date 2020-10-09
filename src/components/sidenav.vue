@@ -15,7 +15,7 @@
         <div class="filter">
             <div class="filter-head">Deadline</div>
             <div class="filter-content">
-                <div class="filter-item" style="display: flex; align-items: center;"><input type="range" class="slider" id="dealineSlider" v-model="deadVal" @mouseup="filterValue" min="1" max="12"><label for="dealineSlider">{{ deadComp }}</label></div>
+                <div class="filter-item" style="display: flex; align-items: center;"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" min="1" max="12"><label for="dealineSlider">{{ deadComp }}</label></div>
             </div>
         </div>
         <div class="filter">
@@ -50,31 +50,31 @@ export default {
     },
     computed: {
         deadComp: function() {
-            if(this.deadVal == 1) {
+            if(DBStore.data.deadSlider == 1) {
                 DBStore.data.taskFilter.dayFilter = 1;
                 return "1 dag";
             }
-            if(this.deadVal <= 6) {
-                DBStore.data.taskFilter.dayFilter = this.deadVal;
-                return this.deadVal + " dagen";
+            if(DBStore.data.deadSlider <= 6) {
+                DBStore.data.taskFilter.dayFilter = DBStore.data.deadSlider;
+                return DBStore.data.deadSlider + " dagen";
             }
-            if(this.deadVal == 7) {
+            if(DBStore.data.deadSlider == 7) {
                 DBStore.data.taskFilter.dayFilter = 7;
                 return "1 week";
             } 
-            if(this.deadVal <= 9) {
-                DBStore.data.taskFilter.dayFilter = (Number(this.deadVal) - 6) * 7;
-                return (Number(this.deadVal) - 6) + " weken";
+            if(DBStore.data.deadSlider <= 9) {
+                DBStore.data.taskFilter.dayFilter = (Number(DBStore.data.deadSlider) - 6) * 7;
+                return (Number(DBStore.data.deadSlider) - 6) + " weken";
             }
-            if(this.deadVal == 10) {
+            if(DBStore.data.deadSlider == 10) {
                 DBStore.data.taskFilter.dayFilter = 30;
                 return "1 maand";
             }
-            if(this.deadVal == 11) {
+            if(DBStore.data.deadSlider == 11) {
                 DBStore.data.taskFilter.dayFilter = 60;
                 return "2 maanden";
             }
-            if(this.deadVal == 12) {
+            if(DBStore.data.deadSlider == 12) {
                 DBStore.data.taskFilter.dayFilter = Number.MAX_SAFE_INTEGER;
                 return "Alle taken"; 
             }
