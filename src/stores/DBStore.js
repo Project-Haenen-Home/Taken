@@ -4,7 +4,7 @@ const DBStore = {
         people: [],
         rooms: [],
 
-        taskFilter: { personID: [], roomID: "0"}
+        taskFilter: { personID: [], roomID: "0", dayFilter: null}
     },
     methods: {
         getAll() {
@@ -19,6 +19,7 @@ const DBStore = {
                 var qArr = [];
                 if(DBStore.data.taskFilter.personID != null && DBStore.data.taskFilter.personID != "") qArr.push("personID=" + DBStore.data.taskFilter.personID.join('|'));
                 if(DBStore.data.taskFilter.roomID != null && DBStore.data.taskFilter.roomID != "" && DBStore.data.taskFilter.roomID != "0") qArr.push("roomID=" + DBStore.data.taskFilter.roomID);
+                if(DBStore.data.taskFilter.dayFilter != null && DBStore.data.taskFilter.dayFilter != "") qArr.push("dayFilter=" + DBStore.data.taskFilter.dayFilter);
                 query += qArr.join("&");
             }
 

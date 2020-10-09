@@ -12,10 +12,10 @@
                 <div v-for="person in DBStore.people" :key="person._id" class="filter-item"><input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="DBStore.taskFilter.personID" @change="DBMethods.getTasks"><label :for="'c_' + person._id">{{person.name}}</label></div>
             </div>
         </div>
-        <div class="filter" hidden>
+        <div class="filter">
             <div class="filter-head">Deadline</div>
             <div class="filter-content">
-                <div class="filter-item"><input type="range" class="slider" id="dealineSlider" v-model="deadVal" min="1" max="31"><label for="dealineSlider">{{ deadComp }}</label></div>
+                <div class="filter-item" style="display: flex; align-items: center;"><input type="range" class="slider" id="dealineSlider" v-model="deadVal" @mouseup="filterValue" min="1" max="12"><label for="dealineSlider">{{ deadComp }}</label></div>
             </div>
         </div>
         <div class="filter">
@@ -36,7 +36,7 @@ export default {
     data() {
         return {
             testVals: [],
-            deadVal: 7,
+            deadVal: 12,
             room: "",
 
             filter: {
@@ -50,13 +50,34 @@ export default {
     },
     computed: {
         deadComp: function() {
-            if(this.deadVal == 1) return "1 dag";
-            if(this.deadVal >= 30) return "1 maand";
-            if((this.deadVal % 7) == 0) {
-                if((this.deadVal / 7) == 1) return "1 week"
-                return (this.deadVal / 7) + " weken";
+            if(this.deadVal == 1) {
+                DBStore.data.taskFilter.dayFilter = 1;
+                return "1 dag";
+            }
+            if(this.deadVal <= 6) {
+                DBStore.data.taskFilter.dayFilter = this.deadVal;
+                return this.deadVal + " dagen";
+            }
+            if(this.deadVal == 7) {
+                DBStore.data.taskFilter.dayFilter = 7;
+                return "1 week";
             } 
-            return this.deadVal + " dagen";
+            if(this.deadVal <= 9) {
+                DBStore.data.taskFilter.dayFilter = (Number(this.deadVal) - 6) * 7;
+                return (Number(this.deadVal) - 6) + " weken";
+            }
+            if(this.deadVal == 10) {
+                DBStore.data.taskFilter.dayFilter = 30;
+                return "1 maand";
+            }
+            if(this.deadVal == 11) {
+                DBStore.data.taskFilter.dayFilter = 60;
+                return "2 maanden";
+            }
+            if(this.deadVal == 12) {
+                DBStore.data.taskFilter.dayFilter = Number.MAX_SAFE_INTEGER;
+                return "Alle taken"; 
+            }
         }
     },
     methods: {
@@ -65,6 +86,9 @@ export default {
         },
         openAdder: function() {
             this.$root.$emit('openOverlay', '{"overlay": "addTask"}');
+        },
+        filterValue: function() {
+            DBStore.methods.getTasks();
         }
     }
 }
@@ -100,7 +124,7 @@ export default {
     }
 
     .slider {
-        width: 100px;
+        width: 80px;
         margin-right: 10px;
     }
 
