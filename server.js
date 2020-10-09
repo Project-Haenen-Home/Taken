@@ -7,10 +7,6 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/dist/index.html");
 });
 
-app.get("/main.js", (req, res) => {
-     res.sendFile(__dirname + "/dist/main.js");
-});
-
-app.get("/style.css", (req, res) => {
-    res.sendFile(__dirname + "/dist/style.css");
+app.get("/:file", (req, res) => {
+     res.sendFile(__dirname + "/dist/" + req.params.file);
 });
