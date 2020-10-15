@@ -2,8 +2,10 @@
     <div>
         <overlay id="overlay" :current="currentOverlay" :contentID="overlayID" />
         <titleBar />
-        <filterBay />
-        <tasks id="main-content" />
+        <div id="main-content">
+            <filterBay />
+            <tasks />
+        </div>
         <sidenav id="side-nav" />
         <lownav id="low-nav" :current="currentPopOut"/>
     </div>
@@ -71,15 +73,16 @@ export default {
         display: none;
     }
 
-    @media only screen and (min-width: 1400px) {
+    @media only screen and (min-width: 1025px) {
         #main-content {
-            width: 87%;
+            width: calc(100% - 250px);
+            height: calc(100vh - 90px);
         }
 
         #side-nav {
             display: block;
             height: 100%;
-            width: 13%;
+            width: 250px;
             top: 90px;
             right: 0;
             border-left: 1px solid grey;
@@ -93,5 +96,25 @@ export default {
 
     .clickable {
         cursor: pointer;
+    }
+
+     /* scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
     }
 </style>

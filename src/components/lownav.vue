@@ -1,18 +1,20 @@
 <template>
     <div>
         <div id="popOut" class="pop-out hidden">
-            <div id="roomPopOut" class="hidden">
+            <div id="roomPopOut" class="pop-out-content hidden">
                 <div class="pop-out-title">
                     <div>Kamers</div>
                     <settingsIcon class="logo-small clickable" @click="openOverlay" />
                 </div>
 
-                <div class="pop-out-item">
-                    <input type="radio" id="r_all" name="room" v-model="DBStore.taskFilter.roomID" value="0" @change="DBMethods.getTasks" checked><label for="r_all">Alle kamers</label>
-                </div>
+                <div class="pop-out-list">
+                    <div class="pop-out-item">
+                        <input type="radio" id="r_all" name="room" v-model="DBStore.taskFilter.roomID" value="0" @change="DBMethods.getTasks" checked><label for="r_all">Alle kamers</label>
+                    </div>
 
-                <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item">
-                    <input type="radio" :id="'r_' + room._id" name="room" v-model="DBStore.taskFilter.roomID" :value="room._id" @change="DBMethods.getTasks"><label :for="'r_' + room._id">{{room.name}}</label>
+                    <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item">
+                        <input type="radio" :id="'r_' + room._id" name="room" v-model="DBStore.taskFilter.roomID" :value="room._id" @change="DBMethods.getTasks"><label :for="'r_' + room._id">{{room.name}}</label>
+                    </div>
                 </div>
             </div>
 
@@ -122,7 +124,7 @@ export default {
     .pop-out {
         padding: 20px;
         max-height: 75vh;
-        width: 60%;
+        width: 100%;
         border-radius: 10px;
 
         background-color: linen;
@@ -139,6 +141,14 @@ export default {
         overflow-x: hidden;
     }
 
+    @media only screen and (min-width: 350px) {
+        .pop-out {
+            width: 60%;
+            max-width: 500px;
+            min-width: 350px;
+        }
+    }
+
     .pop-out-title {
         font-size: 20px;
         font-weight: 700;
@@ -147,9 +157,20 @@ export default {
         justify-content: space-between;
     }
 
+    .pop-out-list::-webkit-scrollbar-track {
+        background: linen;
+    }
+
+    .pop-out-list {
+        margin-top: 10px;
+        height: calc(75vh - 100px);
+        width: 95%;
+        overflow-y: scroll;
+    }
+
     .pop-out-item {
         margin: 10px 20px;
-        padding: 10px;
+        padding: 0 10px 20px 10px;
     }
 
     .low-nav {

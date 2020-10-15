@@ -86,10 +86,14 @@ export default {
 
 <style scoped>
     #filterBay {
-        position: relative;
+        position: sticky;
+        position: -webkit-sticky;
         display: flex;
         align-items: flex-start;
         margin: 0;
+        top: 0;
+        background: white;
+        z-index: 1;
     }
 
     .filters {
@@ -107,7 +111,7 @@ export default {
         margin: 5px 3px;
     }
 
-    @media only screen and (min-width: 1400px) {
+    @media only screen and (min-width: 1025px) {
         #filterBay {
             display: none;
         }
