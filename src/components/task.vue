@@ -29,14 +29,13 @@
 
                 <div class="finishItem"><div class="finishButton clickable" @click="finishTask(task._id)">Gedaan!</div></div>
             </div>
-            <!--  -->
     </div>
 </template>
 
 <script>
 import DBStore from "../stores/DBStore"
 import settingsIcon from "../assets/settings.svg"
-import analyzeIcon from "../assets/analyze.svg"
+// import analyzeIcon from "../assets/analyze.svg"
 
 import progressBar from "./elements/progressbar.vue"
 
