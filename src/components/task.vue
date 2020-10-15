@@ -4,6 +4,7 @@
                 <div style="position: relative;">
                     <span id="title">{{ task.name }}</span>
                     <span class="logo-bay">
+                        <!-- <analyzeIcon class="logo clickable" /> -->
                         <settingsIcon class="logo clickable" @click="openEditor(task._id)"/>
                     </span>
                 </div>
@@ -11,8 +12,16 @@
                     <span>{{ idToName(task.personID, DBStore.people) }}</span>
                     <span>&nbsp;-&nbsp;</span>
                     <span>{{ idToName(task.roomID, DBStore.rooms) }}</span>
+                    <span v-if="(task.comment != null && task.comment != '')">
+                        <span>&nbsp;-&nbsp;</span>
+                        <span> Notitie... 
+                            <span class="clickable" @click="showComment = true" v-if="!showComment">(+)</span>
+                            <span class="clickable" @click="showComment = false" v-if="showComment">(-)</span>
+                        </span>
+                    </span>
                 </div>
             </div>
+            <div class="comment" v-if="showComment">{{ task.comment }}</div>
             <div class="grid-container">
                 <div style="grid-column: 1; grid-row: 1">{{ dealineString(task.finished[task.finished.length - 1], task.period) }}</div>
                 <progressBar style="grid-column: 1; grid-row: 2" :progress="deadlineProgress(task.finished[task.finished.length - 1], task.period)"/>
@@ -20,22 +29,25 @@
 
                 <div class="finishItem"><div class="finishButton clickable" @click="finishTask(task._id)">Gedaan!</div></div>
             </div>
-            <!-- <div>{{ task.comment }}</div> -->
+            <!--  -->
     </div>
 </template>
 
 <script>
 import DBStore from "../stores/DBStore"
 import settingsIcon from "../assets/settings.svg"
+import analyzeIcon from "../assets/analyze.svg"
 
 import progressBar from "./elements/progressbar.vue"
 
 export default {
     name: "task",
-    components: { settingsIcon, progressBar },
+    components: { settingsIcon, analyzeIcon, progressBar },
     props: ['task'],
     data() {
         return {
+            showComment: false,
+
             DBStore: DBStore.data
         }
     },
@@ -107,6 +119,7 @@ export default {
         font-weight: bold;
         font-family: 'Raleway', sans-serif;
         max-width: calc(100% - 35px);
+        /* max-width: calc(100% - 80px); */
     }
 
     .logo-bay {
@@ -138,6 +151,10 @@ export default {
 
     .deadline-txt {
         margin-left: 10px;
+    }
+
+    .comment {
+        margin-bottom: 10px;
     }
 
     .finishItem {
