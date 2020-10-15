@@ -2,7 +2,10 @@
     <div class="task">
             <div class="header">
                 <div class="title-bay">
-                    <span class="title">{{ task.name }}<rotateIcon class="logo clickable" v-if="(task.rotate != null && task.rotate)"/></span>
+                    <span style="display: flex">
+                        <span class="title">{{ task.name }}</span>
+                        <rotateIcon class="logo clickable" v-if="(task.rotate != null && task.rotate)"/>
+                    </span>
                     <span class="logo-bay">
                         <!-- <analyzeIcon class="logo clickable" /> -->
                         <settingsIcon class="logo clickable" @click="openEditor(task._id)"/>
@@ -115,10 +118,11 @@ export default {
 
     .title {
         display: flex;
+        justify-content: flex-start;
         font-size: 24px;
         font-weight: bold;
         font-family: 'Raleway', sans-serif;
-        max-width: calc(100% - 35px);
+        max-width: calc(100% - 80px);
         /* max-width: calc(100% - 80px); */
     }
 
