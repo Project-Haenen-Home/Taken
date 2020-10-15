@@ -106,7 +106,7 @@ export default {
         font-size: 24px;
         font-weight: bold;
         font-family: 'Raleway', sans-serif;
-        max-width: 400px;
+        max-width: 375px;
     }
 
     .logo-bay {

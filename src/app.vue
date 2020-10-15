@@ -61,13 +61,19 @@ export default {
         display: none;
     }
 
+    #main-content {
+        width: 100%;
+        height: calc(100vh - 90px);
+        overflow-y: scroll;
+    }
+
     #side-nav {
         display: none;
     }
 
     @media only screen and (min-width: 1400px) {
         #main-content {
-            margin-right: 13%;
+            width: 87%;
         }
 
         #side-nav {
