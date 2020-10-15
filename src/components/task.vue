@@ -4,8 +4,7 @@
                 <div style="position: relative;">
                     <span id="title">{{ task.name }}</span>
                     <span class="logo-bay">
-                        <editIcon class="logo clickable" @click="openEditor(task._id)"/>
-                        <deleteIcon class="logo clickable" @click="deleteItem(task._id)" />
+                        <settingsIcon class="logo clickable" @click="openEditor(task._id)"/>
                     </span>
                 </div>
                 <div class="under-title">
@@ -27,14 +26,13 @@
 
 <script>
 import DBStore from "../stores/DBStore"
-import deleteIcon from "../assets/delete.svg"
-import editIcon from "../assets/pen.svg"
+import settingsIcon from "../assets/settings.svg"
 
 import progressBar from "./elements/progressbar.vue"
 
 export default {
     name: "task",
-    components: { deleteIcon, editIcon, progressBar },
+    components: { settingsIcon, progressBar },
     props: ['task'],
     data() {
         return {
@@ -108,7 +106,7 @@ export default {
         font-size: 24px;
         font-weight: bold;
         font-family: 'Raleway', sans-serif;
-        max-width: 350px;
+        max-width: 400px;
     }
 
     .logo-bay {
@@ -130,9 +128,8 @@ export default {
     }
 
     .logo {
-        width: 28px;
-        height: 28px;
-        margin-right: 8px;
+        width: 24px;
+        height: 24px;
     }
 
     .clickable {

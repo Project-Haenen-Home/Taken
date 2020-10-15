@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div id="title">Taak wijzigen</div>
+        <div style="position: relative">
+            <div id="title">Taak wijzigen</div>
+            <deleteIcon class="logo clickable" style="margin-right: 5px" @click="deleteTask(taskID)" />
+        </div>
         <table>
             <tr><td><label for="name">Naam: </label></td> <td><input id="name" type="text" v-model="name"/></td></tr>
             <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{ person.name }}</option></select></td></tr>
@@ -15,9 +18,12 @@
 <script>
 import DBStore from "../../stores/DBStore"
 
+import deleteIcon from "../../assets/delete.svg"
+
 export default {
     name: "editTask",
     props: ['taskID'],
+    components: { deleteIcon },
     watch: {
         taskID: function(newID, oldID) {
             this.DBStore.tasks.forEach(el => {
@@ -69,6 +75,17 @@ export default {
                         this.$emit("close");
                     });
             } else alert("Sommige verplichten velden zijn niet ingevuld!");
+        },
+        deleteTask: function(id) {
+            if(confirm("Weet je zeker dat je deze taak wilt verwijderen?")) {
+                fetch("http://wolleserver.local:2400/task/" + id, { method: "DELETE" })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .then(() => {
+                        DBStore.methods.getTasks();
+                        this.$emit("close");
+                    });
+            }
         }
     }
 }
@@ -93,5 +110,11 @@ export default {
 
     textarea {
         resize: none;
+    }
+
+    .logo {
+        position: absolute;
+        top: 0;
+        right: 30px;
     }
 </style>
