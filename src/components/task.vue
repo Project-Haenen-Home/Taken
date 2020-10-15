@@ -1,8 +1,8 @@
 <template>
     <div class="task">
             <div class="header">
-                <div style="position: relative;">
-                    <span id="title">{{ task.name }}</span>
+                <div class="title-bay">
+                    <span class="title">{{ task.name }}<rotateIcon class="logo clickable" v-if="(task.rotate != null && task.rotate)"/></span>
                     <span class="logo-bay">
                         <!-- <analyzeIcon class="logo clickable" /> -->
                         <settingsIcon class="logo clickable" @click="openEditor(task._id)"/>
@@ -35,13 +35,14 @@
 <script>
 import DBStore from "../stores/DBStore"
 import settingsIcon from "../assets/settings.svg"
+import rotateIcon from "../assets/rotate.svg"
 // import analyzeIcon from "../assets/analyze.svg"
 
 import progressBar from "./elements/progressbar.vue"
 
 export default {
     name: "task",
-    components: { settingsIcon, progressBar },
+    components: { settingsIcon, rotateIcon, progressBar },
     props: ['task'],
     data() {
         return {
@@ -112,8 +113,12 @@ export default {
         padding-bottom: 10px;
     }
 
-    #title {
-        display: block;
+    .title-bay {
+        position: relative;
+    }
+
+    .title {
+        display: flex;
         font-size: 24px;
         font-weight: bold;
         font-family: 'Raleway', sans-serif;

@@ -4,7 +4,10 @@
         <div class="filters">
             <div class="filter-item clickable" @click="$root.$emit('openPopOut', 'roomFilter')">{{ idToName(DBStore.taskFilter.roomID, DBStore.rooms) }}</div>
             <div v-for="person in DBStore.taskFilter.personID" :key="person" class="filter-item clickable" @click="deletePerson(person)">{{ idToName(person, DBStore.people) }}</div>
-            <div class="filter-item clickable" style="width: 120px; text-align: center;" @click="toggleSliderPop">{{ deadComp }}<div id="sliderPop" class="hidden"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @touchend="filterValue" min="1" max="12"></div></div>
+            <div style="position: relative; width: 120px;">
+                <div class="filter-item clickable" style="text-align: center;" @click="toggleSliderPop">{{ deadComp }}</div>
+                <div id="sliderPop" class="hidden"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" @touchend="filterValue" min="1" max="12"></div>
+            </div>
         </div>
         <div class="new-task clickable" @click="openAdder">Nieuwe taak<addIcon class="logo"/></div>
     </div>

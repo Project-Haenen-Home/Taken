@@ -15,7 +15,7 @@
         <div class="filter">
             <div class="filter-head">Deadline</div>
             <div class="filter-content">
-                <div class="filter-item" style="display: flex; align-items: center;"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" min="1" max="12"><label for="dealineSlider">{{ deadComp }}</label></div>
+                <div class="filter-item" style="display: flex; align-items: center;"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" @touchend="filterValue" min="1" max="12"><label for="dealineSlider">{{ deadComp }}</label></div>
             </div>
         </div>
         <div class="filter">
