@@ -41,7 +41,7 @@ import progressBar from "./elements/progressbar.vue"
 
 export default {
     name: "task",
-    components: { settingsIcon, analyzeIcon, progressBar },
+    components: { settingsIcon, progressBar },
     props: ['task'],
     data() {
         return {
