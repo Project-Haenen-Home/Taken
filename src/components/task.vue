@@ -36,13 +36,13 @@
 import DBStore from "../stores/DBStore"
 import settingsIcon from "../assets/settings.svg"
 import rotateIcon from "../assets/rotate.svg"
-// import analyzeIcon from "../assets/analyze.svg"
+import analyzeIcon from "../assets/analyze.svg"
 
 import progressBar from "./elements/progressbar.vue"
 
 export default {
     name: "task",
-    components: { settingsIcon, rotateIcon, progressBar },
+    components: { settingsIcon, analyzeIcon, rotateIcon, progressBar },
     props: ['task'],
     data() {
         return {
@@ -75,24 +75,20 @@ export default {
                 }
             }
         },
-        deleteItem: function(id) {
-            fetch("http://wolleserver.local:2400/task/" + id, { method: "DELETE" })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .then(() => DBStore.methods.getTasks());
-        },
         finishTask(id) {
-            const requestOptions = {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ finished: true })
-            };
+            if(confirm("Heb je deze taak gedaan?")) {
+                const requestOptions = {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ finished: true })
+                };
 
 
-            fetch("http://wolleserver.local:2400/task/" + id, requestOptions)
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .then(() => DBStore.methods.getTasks());
+                fetch("http://wolleserver.local:2400/task/" + id, requestOptions)
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .then(() => DBStore.methods.getTasks());
+            }
         },
         openEditor: function(id) {
             this.$root.$emit('openOverlay', '{ "overlay": "editTask", "id": "' + id + '" }');
