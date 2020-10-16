@@ -1,12 +1,13 @@
 <template>
     <div id="filterBay">
+        <div class="overlay" v-if="showSlider" @click="showSlider = false"></div>
         <div style="margin: 12px 5px 0 0;">Filters:</div>
         <div class="filters">
             <div class="filter-item clickable" @click="$root.$emit('openPopOut', 'roomFilter')">{{ idToName(DBStore.taskFilter.roomID, DBStore.rooms) }}</div>
             <div v-for="person in DBStore.taskFilter.personID" :key="person" class="filter-item clickable" @click="deletePerson(person)">{{ idToName(person, DBStore.people) }}</div>
             <div style="position: relative; width: 120px;">
-                <div class="filter-item clickable" style="text-align: center;" @click="toggleSliderPop">{{ deadComp }}</div>
-                <div id="sliderPop" class="hidden"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" @touchend="filterValue" min="1" max="12"></div>
+                <div class="filter-item clickable" style="text-align: center;" @click="showSlider = true">{{ deadComp }}</div>
+                <div id="sliderPop" v-if="showSlider"><input type="range" class="slider" id="dealineSlider" v-model="DBStore.deadSlider" @mouseup="filterValue" @touchend="filterValue" min="1" max="12"></div>
             </div>
         </div>
         <div class="new-task clickable" @click="openAdder">Nieuwe taak<addIcon class="logo"/></div>
@@ -23,6 +24,8 @@ export default {
     components: { addIcon },
     data() {
         return {
+            showSlider: false,
+
             DBStore: DBStore.data
         }
     },
@@ -103,7 +106,7 @@ export default {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        width: calc(100% - 170px);
+        width: 100%;
     }
 
     .filter-item {
@@ -130,7 +133,7 @@ export default {
         padding: 5px;
         transform: translate(-50%, 40px);
         -ms-transform: translate(-50%, 0);
-        z-index: 1;
+        z-index: 10;
     }
 
     .logo {
@@ -142,8 +145,22 @@ export default {
     .new-task {
         display: flex;
         align-items: center;
-        width: 120px;
+        min-width: 120px;
         margin: 10px 3px;
         font-size: 14px;
     }
+
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.2);
+        z-index: 9;
+        cursor: pointer;
+    }
+
 </style>
