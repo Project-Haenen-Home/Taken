@@ -16,14 +16,19 @@ export default {
     props: ['roomID'],
     data() {
         return {
-            name: "",
+            curID: "",
+            roomName: "",
 
             DBStore: DBStore.data
         }
     },
-    watch: {
-        roomID: function(newID, oldID) {
-            this.name = this.idToName(newID, this.DBStore.rooms);
+    computed: {
+        name: {
+            get: function() {
+                if(this.curID != this.roomID) this.getRoom();
+                return this.roomName;
+            },
+            set: function(value) { this.roomName = value }
         }
     },
     methods: {
@@ -54,6 +59,10 @@ export default {
                 }
             }
         },
+        getRoom: function() {
+            this.name = this.idToName(this.roomID, this.DBStore.rooms);
+            this.curID = this.roomID;
+        }
     }
 }
 </script>

@@ -34,29 +34,47 @@ export default {
         }
     },
     computed: {
-        name: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.name;
+        name: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.name;
+            },
+            set: function(value) { this.task.name = value }
         },
-        person: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.personID;
+        person: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.personID;
+            },
+            set: function(value) { this.task.personID = value }
         },
-        rotate: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.rotate;
+        rotate: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.rotate;
+            },
+            set: function(value) { this.task.rotate = value }
         },
-        room: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.roomID;
+        room: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.roomID;
+            },
+            set: function(value) { this.task.roomID = value }
         },
-        period: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.period;
+        period: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.period;
+            },
+            set: function(value) { this.task.period = value }
         },
-        comment: function() {
-            if(this.curID != this.taskID) this.getTask();
-            return this.task.comment;
+        comment: {
+            get: function() {
+                if(this.curID != this.taskID) this.getTask();
+                return this.task.comment;
+            },
+            set: function(value) { this.task.comment = value }
         }
     },
     methods: {
@@ -64,7 +82,7 @@ export default {
             for(var i = 0; i < DBStore.data.tasks.length; i++) {
                 if(DBStore.data.tasks[i]._id == this.taskID) {
                     this.curID = this.taskID;
-                    this.task = DBStore.data.tasks[i];
+                    this.task = {...DBStore.data.tasks[i]};
                     break;
                 }
             }
