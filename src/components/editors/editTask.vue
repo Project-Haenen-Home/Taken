@@ -163,5 +163,7 @@ export default {
         position: absolute;
         top: 0;
         right: 30px;
+        width: 24px;
+        height: 24px;
     }
 </style>

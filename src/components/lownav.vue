@@ -2,30 +2,8 @@
     <div>
         <div class="overlay" v-if="navExpanded" @click="toggle"></div>
         <div id="popOut" v-if="showRooms || showPeople" class="pop-out">
-            <div id="roomPopOut" v-if="showRooms" class="pop-out-content">
-                <div class="pop-out-title">
-                    <div>Kamers</div>
-                    <settingsIcon class="logo-small clickable" @click="openOverlay" />
-                </div>
-
-                <div class="pop-out-list">
-                    <div class="pop-out-item">
-                        <input type="radio" id="r_all" name="room" v-model="DBStore.taskFilter.roomID" value="0" @change="DBMethods.getTasks" checked><label for="r_all">Alle kamers</label>
-                    </div>
-
-                    <div v-for="room in DBStore.rooms" :key="room._id" class="pop-out-item">
-                        <input type="radio" :id="'r_' + room._id" name="room" v-model="DBStore.taskFilter.roomID" :value="room._id" @change="DBMethods.getTasks"><label :for="'r_' + room._id">{{room.name}}</label>
-                    </div>
-                </div>
-            </div>
-
-            <div id="personPopOut" v-if="showPeople">
-                <div class="pop-out-title">Personen</div>
-
-                <div v-for="person in DBStore.people" :key="person._id" class="pop-out-item" >
-                    <input type="checkbox" :id="'c_' + person._id" :value="person._id" v-model="DBStore.taskFilter.personID" @change="DBMethods.getTasks"><label :for="'c_' + person._id">{{person.name}}</label>
-                </div>
-            </div>
+            <roomPopOut id="roomPopOut" v-if="showRooms" />
+            <personPopOut id="personPopOut" v-if="showPeople" />
         </div>
 
         <div :class="{ 'low-nav': true, 'low-nav-expanded': navExpanded }">
@@ -44,25 +22,19 @@ import DBStore from "../stores/DBStore"
 import roomIcon from "../assets/room.svg"
 import dotsIcon from "../assets/dots-menu.svg"
 import personIcon from "../assets/person.svg"
-import settingsIcon from "../assets/settings.svg"
+
+const roomPopOut = () => import("../components/popOuts/roomPopOut.vue")
+const personPopOut = () => import("../components/popOuts/personPopOut.vue")
 
 export default {
     name: "lownav",
     props: ['current'],
-    components: { roomIcon, dotsIcon, personIcon, settingsIcon },
+    components: { roomIcon, dotsIcon, personIcon, roomPopOut, personPopOut },
     data() {
         return {
-            checkVals: [],
-            roomID: "",
-
             navExpanded: false,
             showRooms: false,
             showPeople: false,
-
-            filter: {
-                personID: "",
-                roomID: ""
-            },
 
             DBStore: DBStore.data,
             DBMethods: DBStore.methods
@@ -97,13 +69,43 @@ export default {
         togglePersonPop: function() {
             this.showPeople = !this.showPeople;
             this.showRooms = false;
-        },
-        openOverlay: function() {
-            this.$root.$emit('openOverlay', '{"overlay": "roomSettings"}')
         }
     }
 }
 </script>
+
+<style>
+    .pop-out-title {
+        font-size: 20px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .pop-out-list::-webkit-scrollbar-track {
+        background: linen;
+    }
+
+    .pop-out-list {
+        margin-top: 10px;
+        height: calc(75vh - 100px);
+        width: 95%;
+        overflow-y: scroll;
+    }
+
+    .pop-out-item {
+        margin: 10px 20px;
+        padding: 0 10px 20px 10px;
+    }
+
+    .logo-small {
+        width: 24px;
+        height: 24px;
+
+        margin-left: 10px;
+    }
+</style>
 
 <style scoped>
     .overlay {
@@ -145,30 +147,6 @@ export default {
             max-width: 500px;
             min-width: 350px;
         }
-    }
-
-    .pop-out-title {
-        font-size: 20px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .pop-out-list::-webkit-scrollbar-track {
-        background: linen;
-    }
-
-    .pop-out-list {
-        margin-top: 10px;
-        height: calc(75vh - 100px);
-        width: 95%;
-        overflow-y: scroll;
-    }
-
-    .pop-out-item {
-        margin: 10px 20px;
-        padding: 0 10px 20px 10px;
     }
 
     .low-nav {
@@ -215,24 +193,9 @@ export default {
         margin: 20px;
     }
 
-    .logo-small {
-        width: 24px;
-        height: 24px;
-
-        margin-left: 10px;
-    }
-
     .logo {
         width: 36px;
         height: 36px;
         margin: 17px;
-    }
-
-    .clickable {
-        cursor: pointer;
-    }
-
-    .hidden {
-        display: none;
     }
 </style>

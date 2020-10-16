@@ -14,11 +14,11 @@
 
 <script>
 import closeIcon from "../assets/close.svg"
-import taskAdder from "./editors/addTask.vue"
-import taskEditor from "./editors/editTask.vue"
-import roomAdder from "./editors/addRoom.vue"
-import roomEditor from "./editors/editRoom.vue"
-import roomSettings from "./editors/roomSettings.vue"
+const taskAdder = () => import("./editors/addTask.vue")
+const taskEditor = () => import("./editors/editTask.vue")
+const roomAdder = () => import("./editors/addRoom.vue")
+const roomEditor = () => import("./editors/editRoom.vue")
+const roomSettings = () => import("./editors/roomSettings.vue")
 
 export default {
     name: "overlay",
