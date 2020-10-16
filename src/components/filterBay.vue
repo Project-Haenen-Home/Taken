@@ -82,9 +82,6 @@ export default {
         },
         filterValue: function() {
             DBStore.methods.getTasks();
-        },
-        toggleSliderPop: function() {
-            document.querySelector('#sliderPop').classList.toggle('hidden');
         }
     }
 }
