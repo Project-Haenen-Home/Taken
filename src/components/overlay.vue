@@ -1,12 +1,13 @@
 <template>
-    <div id="overlay" class="hidden">
+    <div>
+        <div id="overlay" @click="closeOverlay"></div>
         <div id="content">
             <closeIcon class="logo clickable" @click="closeOverlay" />
-            <taskAdder id="taskAdder" class="hidden" @close="closeOverlay" />
-            <taskEditor id="taskEditor" class="hidden" @close="closeOverlay" :taskID="contentID" />
-            <roomAdder id="roomAdder" class="hidden" @close="closeOverlay" />
-            <roomEditor id="roomEditor" class="hidden" @close="closeOverlay" :roomID="contentID" />
-            <roomSettings id="roomSettings" class="hidden" @close="closeOverlay" />
+            <taskAdder id="taskAdder" v-if="current == 'addTask'" @close="closeOverlay" />
+            <taskEditor id="taskEditor" v-if="current == 'editTask'" @close="closeOverlay" :taskID="contentID" />
+            <roomAdder id="roomAdder" v-if="current == 'addRoom'" @close="closeOverlay" />
+            <roomEditor id="roomEditor" v-if="current == 'editRoom'" @close="closeOverlay" :roomID="contentID" />
+            <roomSettings id="roomSettings" v-if="current == 'roomSettings'" @close="closeOverlay" />
         </div>
     </div>
 </template>
@@ -23,59 +24,20 @@ export default {
     name: "overlay",
     components: { taskAdder, taskEditor, roomAdder, roomEditor, roomSettings, closeIcon },
     props: ['current', 'contentID'],
-    watch: {
-        current: function(newVal, oldVal) {
-            const overlay = document.querySelector("#overlay");
-            const taskAdd = document.querySelector("#taskAdder");
-            const taskEdit = document.querySelector("#taskEditor");
-            const roomAdd = document.querySelector("#roomAdder");
-            const roomEdit = document.querySelector("#roomEditor");
-            const roomSet = document.querySelector("#roomSettings");
+    data() {
+        return {
+            showRoomAdd: false,
+            showRoomEdit: false,
+            showRoomSet: false,
 
-            if(newVal == "addRoom") {
-                this.closeAll();
-                overlay.classList.remove("hidden");
-                roomAdd.classList.remove("hidden");
-            } else if(newVal == "addTask") {
-                this.closeAll();
-                overlay.classList.remove("hidden");
-                taskAdd.classList.remove("hidden");
-            } else if(newVal == "roomSettings") {
-                this.closeAll();
-                overlay.classList.remove("hidden");
-                roomSet.classList.remove("hidden");
-            } else if(newVal == "editRoom") {
-                this.closeAll();
-                overlay.classList.remove("hidden");
-                roomEdit.classList.remove("hidden");
-            } else if(newVal == "editTask") {
-                this.closeAll();
-                overlay.classList.remove("hidden");
-                taskEdit.classList.remove("hidden");
-            }
+            showTaskAdd: false,
+            showTaskEdit: false,
         }
     },
     methods: {
         closeOverlay: function() {
-            const overlay = document.querySelector("#overlay");
-            
-            overlay.classList.add("hidden");
             this.$root.$emit('openOverlay', '{ "overlay": "", "id": ""}');
-        },
-        
-        closeAll: function() {
-            const taskAdd = document.querySelector("#taskAdder");
-            const roomAdd = document.querySelector("#roomAdder");
-            const roomEdit = document.querySelector("#roomEditor");
-            const taskEdit = document.querySelector("#taskEditor");
-            const roomSet = document.querySelector("#roomSettings");
-
-            taskAdd.classList.add("hidden");
-            taskEdit.classList.add("hidden");
-            roomAdd.classList.add("hidden");
-            roomEdit.classList.add("hidden");
-            roomSet.classList.add("hidden");
-        }   
+        }  
     }
 }
 </script>
@@ -90,7 +52,7 @@ export default {
         right: 0;
         bottom: 0;
         background-color: rgba(0,0,0,0.5);
-        z-index: 2;
+        z-index: 5;
         cursor: pointer;
     }
 
@@ -107,6 +69,7 @@ export default {
         padding: 30px 50px;
         border-radius: 10px;
         cursor: default;
+        z-index: 6;
     }
 
     @media only screen and (min-width: 900px) {

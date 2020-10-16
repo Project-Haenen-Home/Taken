@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div id="popOut" class="pop-out hidden">
-            <div id="roomPopOut" class="pop-out-content hidden">
+        <div class="overlay" v-if="navExpanded" @click="toggle"></div>
+        <div id="popOut" v-if="showRooms || showPeople" class="pop-out">
+            <div id="roomPopOut" v-if="showRooms" class="pop-out-content">
                 <div class="pop-out-title">
                     <div>Kamers</div>
                     <settingsIcon class="logo-small clickable" @click="openOverlay" />
@@ -18,7 +19,7 @@
                 </div>
             </div>
 
-            <div id="personPopOut" class="hidden">
+            <div id="personPopOut" v-if="showPeople">
                 <div class="pop-out-title">Personen</div>
 
                 <div v-for="person in DBStore.people" :key="person._id" class="pop-out-item" >
@@ -27,11 +28,11 @@
             </div>
         </div>
 
-        <div class="low-nav">
+        <div :class="{ 'low-nav': true, 'low-nav-expanded': navExpanded }">
             <div class="container">
-                <roomIcon id="roomIcon" class="logo clickable hidden" @click="toggleRoomPop"/>
-                <dotsIcon id="menuIcon" class="menu-small clickable" @click="toggle"/>
-                <personIcon id="personIcon" class="logo clickable hidden" @click="togglePersonPop"/>
+                <roomIcon id="roomIcon" v-if="navExpanded" class="logo clickable" @click="toggleRoomPop"/>
+                <dotsIcon id="menuIcon" :class="{ 'menu-small': !navExpanded, 'menu-large': navExpanded, clickable: true }" @click="toggle"/>
+                <personIcon id="personIcon" v-if="navExpanded" class="logo clickable" @click="togglePersonPop"/>
             </div>
         </div>
     </div>
@@ -53,6 +54,10 @@ export default {
         return {
             checkVals: [],
             roomID: "",
+
+            navExpanded: false,
+            showRooms: false,
+            showPeople: false,
 
             filter: {
                 personID: "",
@@ -76,42 +81,22 @@ export default {
     },
     methods: {
         toggle: function() {
-            const lowNav = document.querySelector(".low-nav");
-            const room = document.querySelector("#roomIcon");
-            const menu = document.querySelector("#menuIcon");
-            const person = document.querySelector("#personIcon");
-            const popOut = document.querySelector(".pop-out");
-            const roomPopOut = document.querySelector("#roomPopOut");
-            const personPopOut = document.querySelector("#personPopOut");
-
-            if(lowNav.classList.contains("low-nav-expanded")) {
-                popOut.classList.add("hidden");
-                roomPopOut.classList.add("hidden");
-                personPopOut.classList.add("hidden");
+            if(this.navExpanded) {
+                this.showRooms = false;
+                this.showPeople = false;
                 this.$root.$emit("openPopOut","");
             }
-            lowNav.classList.toggle("low-nav-expanded");
-            room.classList.toggle("hidden");
-            menu.classList.toggle("menu-large");
-            person.classList.toggle("hidden");
+
+            this.navExpanded = !this.navExpanded;
+
         },
         toggleRoomPop: function() {
-            const popOut = document.querySelector(".pop-out");
-            const roomPopOut = document.querySelector("#roomPopOut");
-            const personPopOut = document.querySelector("#personPopOut");
-
-            if(personPopOut.classList.contains("hidden")) popOut.classList.toggle("hidden");
-            else personPopOut.classList.add("hidden");
-            roomPopOut.classList.toggle("hidden");
+            this.showRooms = !this.showRooms;
+            this.showPeople = false;
         },
         togglePersonPop: function() {
-            const popOut = document.querySelector(".pop-out");
-            const roomPopOut = document.querySelector("#roomPopOut");
-            const personPopOut = document.querySelector("#personPopOut");
-
-            if(roomPopOut.classList.contains("hidden")) popOut.classList.toggle("hidden");
-            else roomPopOut.classList.add("hidden");
-            personPopOut.classList.toggle("hidden");
+            this.showPeople = !this.showPeople;
+            this.showRooms = false;
         },
         openOverlay: function() {
             this.$root.$emit('openOverlay', '{"overlay": "roomSettings"}')
@@ -121,6 +106,19 @@ export default {
 </script>
 
 <style scoped>
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 2;
+        cursor: pointer;
+    }
+
     .pop-out {
         padding: 20px;
         max-height: 75vh;
@@ -137,7 +135,7 @@ export default {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
         position: fixed;
-        z-index: 1;
+        z-index: 4;
         overflow-x: hidden;
     }
 
@@ -188,7 +186,7 @@ export default {
         box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.4), 0 8px 20px 3px rgba(0, 0, 0, 0.3);
         
         position: fixed;
-        z-index: 1;
+        z-index: 3;
         overflow-x: hidden;
         transition: bottom 300ms ease-out;
     }

@@ -6,7 +6,7 @@
         </div>
         <table>
             <tr><td><label for="name">Naam: </label></td> <td><input id="name" type="text" v-model="name"/></td></tr>
-            <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{ person.name }}</option></select></td></tr>
+            <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option v-for="person in DBStore.people" :key="person._id" :value="person._id">{{ person.name }}</option></select></td></tr>
             <tr><td><label for="rotate">Roterend: </label></td> <td><input id="rotate" type="checkbox" v-model="rotate" style="margin-left: 0" /></td></tr>
             <tr><td><label for="room">Kamer: </label></td> <td><select id="room" v-model="room"><option v-for="room in DBStore.rooms" v-bind:key="room._id" v-bind:value="room._id">{{ room.name }}</option></select></td></tr>
             <tr><td><label for="period">Periode: </label></td> <td><input id="period" v-model="period" type="number" min="1" step="1"/><span>&nbsp;Dagen</span></td></tr>
@@ -25,33 +25,50 @@ export default {
     name: "editTask",
     props: ['taskID'],
     components: { deleteIcon },
-    watch: {
-        taskID: function(newID, oldID) {
-            this.DBStore.tasks.forEach(el => {
-                if(el._id == newID) {
-                    this.name = el.name;
-                    this.person = el.personID;
-                    this.rotate = el.rotate;
-                    this.room = el.roomID;
-                    this.period = el.period;
-                    this.comment = el.comment;
-                }
-            });
-        }
-    },
     data() {
         return {
-            name: "",
-            person: "",
-            rotate: false,
-            room: "",
-            period: "10",
-            comment: "",
+            curID: "",
+            task: null,
 
             DBStore: DBStore.data
         }
     },
+    computed: {
+        name: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.name;
+        },
+        person: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.personID;
+        },
+        rotate: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.rotate;
+        },
+        room: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.roomID;
+        },
+        period: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.period;
+        },
+        comment: function() {
+            if(this.curID != this.taskID) this.getTask();
+            return this.task.comment;
+        }
+    },
     methods: {
+        getTask: function() {
+            for(var i = 0; i < DBStore.data.tasks.length; i++) {
+                if(DBStore.data.tasks[i]._id == this.taskID) {
+                    this.curID = this.taskID;
+                    this.task = DBStore.data.tasks[i];
+                    break;
+                }
+            }
+        },
         editTask: function() {
             if(this.name != "" && this.person != "" && this.room != "" && this.number != "") {
 

@@ -3,9 +3,9 @@
         <div id="title">Taak toevoegen</div>
         <table>
             <tr><td><label for="name">Naam: </label></td> <td><input id="name" type="text" v-model="name"/></td></tr>
-            <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{ person.name }}</option></select></td></tr>
+            <tr><td><label for="person">Persoon: </label> </td><td><select id="person" v-model="person"><option selected value="0" hidden>Kies een persoon...</option><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{ person.name }}</option></select></td></tr>
             <tr><td><label for="rotate">Roterend: </label></td> <td><input id="rotate" type="checkbox" v-model="rotate" style="margin-left: 0" /></td></tr>
-            <tr><td><label for="room">Kamer: </label></td> <td><select id="room" v-model="room"><option v-for="room in DBStore.rooms" v-bind:key="room._id" v-bind:value="room._id">{{ room.name }}</option></select></td></tr>
+            <tr><td><label for="room">Kamer: </label></td> <td><select id="room" v-model="room"><option selected value="0" hidden>Kies een kamer...</option><option v-for="room in DBStore.rooms" v-bind:key="room._id" v-bind:value="room._id">{{ room.name }}</option></select></td></tr>
             <tr><td><label for="period">Periode: </label></td> <td><input id="period" v-model="period" type="number" min="1" step="1"/><span>&nbsp;Dagen</span></td></tr>
             <tr><td><label for="comment">Notitie: </label></td> <td><textarea id="comment" v-model="comment" rows="4" ></textarea></td></tr>
             <tr><td></td><td><button @click="addTask">Voeg toe</button></td></tr>
@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         addTask: function() {
-            if(this.name != "" && this.person != "" && this.room != "" && this.number != "") {
+            if(this.name != "" && this.person != "0" && this.room != "0" && this.number != "") {
 
                 var json = new Object();
                 json.name = this.name;

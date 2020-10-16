@@ -103,7 +103,7 @@ export default {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        max-width: calc(100% - 130px - 1%);;
+        width: calc(100% - 170px);
     }
 
     .filter-item {
@@ -140,12 +140,10 @@ export default {
     }
 
     .new-task {
-        position: absolute;
         display: flex;
         align-items: center;
-        top: 0;
-        right: 0;
-        width: 130px;
+        width: 120px;
         margin: 10px 3px;
+        font-size: 14px;
     }
 </style>

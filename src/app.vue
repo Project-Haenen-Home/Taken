@@ -1,6 +1,6 @@
 <template>
     <div>
-        <overlay id="overlay" :current="currentOverlay" :contentID="overlayID" />
+        <overlay id="overlay" v-if="showOverlay" :current="currentOverlay" :contentID="overlayID"  />
         <titleBar />
         <div id="main-content">
             <filterBay />
@@ -18,13 +18,14 @@ import DBStore from "./stores/DBStore"
 import titleBar from "./components/titleBar.vue"
 import sidenav from "./components/sidenav.vue"
 import tasks from "./components/listTasks.vue"
-import overlay from "./components/overlay.vue"
+const overlay = () => import("./components/overlay.vue")
 
 export default {
     name: "App",
     components: { tasks, overlay, titleBar, sidenav, lownav, filterBay },
     data() {
         return {
+            showOverlay: false,
             currentOverlay: "",
             overlayID: "",
             currentPopOut: "",
@@ -38,6 +39,9 @@ export default {
     mounted() {
         this.$root.$on('openOverlay', (data) => {
             const j = JSON.parse(data);
+
+            if(j.overlay != "") this.showOverlay = true;
+            else this.showOverlay = false;
 
             this.overlayID = j.id;
             this.currentOverlay = j.overlay;
