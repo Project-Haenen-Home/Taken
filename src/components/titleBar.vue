@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <span id="title">Taken</span>
+        <span id="title">Taken @ HaenenHome</span>
     </div>
 </template>
 
