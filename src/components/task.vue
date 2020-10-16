@@ -4,7 +4,7 @@
                 <div class="title-bay">
                     <span style="display: flex">
                         <span class="title">{{ task.name }}</span>
-                        <rotateIcon class="logo clickable" v-if="(task.rotate != null && task.rotate)"/>
+                        <rotateIcon class="logo clickable" v-if="(task.rotate != null && task.rotate)" style="margin-left: 10px"/>
                     </span>
                     <span class="logo-bay">
                         <!-- <analyzeIcon class="logo clickable" /> -->
