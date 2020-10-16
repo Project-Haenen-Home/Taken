@@ -23,8 +23,8 @@ import roomIcon from "../assets/room.svg"
 import dotsIcon from "../assets/dots-menu.svg"
 import personIcon from "../assets/person.svg"
 
-const roomPopOut = () => import("../components/popOuts/roomPopOut.vue")
-const personPopOut = () => import("../components/popOuts/personPopOut.vue")
+const roomPopOut = () => import("../components/popOuts/roomPopOut.vue"/* webpackChunkName: "roomPopOut" */)
+const personPopOut = () => import("../components/popOuts/personPopOut.vue"/* webpackChunkName: "personPopOut" */)
 
 export default {
     name: "lownav",

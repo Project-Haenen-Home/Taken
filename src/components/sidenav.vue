@@ -95,13 +95,6 @@ export default {
 </script>
 
 <style scoped>
-    .side-nav {
-        position: fixed;
-        z-index: 1;
-        overflow-x: hidden;
-        padding-top: 20px;
-    }
-
     .filter {
         margin-bottom: 20px;
     }

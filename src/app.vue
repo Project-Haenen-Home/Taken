@@ -2,11 +2,13 @@
     <div>
         <overlay id="overlay" v-if="showOverlay" :current="currentOverlay" :contentID="overlayID"  />
         <titleBar />
-        <div id="main-content">
-            <filterBay />
-            <tasks />
+        <div id="content">
+            <div id="main-content">
+                <filterBay />
+                <tasks />
+            </div>
+            <sidenav id="side-nav" />
         </div>
-        <sidenav id="side-nav" />
         <lownav id="low-nav" :current="currentPopOut"/>
     </div>
 </template>
@@ -16,9 +18,10 @@ import filterBay from "./components/filterBay.vue"
 import lownav from "./components/lownav.vue"
 import DBStore from "./stores/DBStore"
 import titleBar from "./components/titleBar.vue"
-import sidenav from "./components/sidenav.vue"
 import tasks from "./components/listTasks.vue"
-const overlay = () => import("./components/overlay.vue")
+
+const sidenav = () => import("./components/sidenav.vue"/* webpackChunkName: "sidenav" */)
+const overlay = () => import("./components/overlay.vue"/* webpackChunkName: "overlay" */)
 
 export default {
     name: "App",
@@ -93,9 +96,15 @@ export default {
 </style>
 
 <style scoped>
-    #main-content {
+    #content {
+        display: flex;
         width: 100%;
         height: calc(100vh - 90px);
+    }
+
+    #main-content {
+        width: 100%;
+        height: inherit;
         overflow-y: scroll;
     }
 
@@ -104,19 +113,11 @@ export default {
     }
 
     @media only screen and (min-width: 1025px) {
-        #main-content {
-            width: calc(100% - 250px);
-            height: calc(100vh - 90px);
-        }
-
         #side-nav {
             display: block;
-            height: 100%;
-            width: 250px;
-            top: 90px;
-            right: 0;
+            padding: 20px 0 0 20px;
             border-left: 1px solid grey;
-            padding: 20px;
+            min-width: 275px;
         }
 
         #low-nav {

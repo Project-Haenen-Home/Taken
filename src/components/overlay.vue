@@ -14,11 +14,11 @@
 
 <script>
 import closeIcon from "../assets/close.svg"
-const taskAdder = () => import("./editors/addTask.vue")
-const taskEditor = () => import("./editors/editTask.vue")
-const roomAdder = () => import("./editors/addRoom.vue")
-const roomEditor = () => import("./editors/editRoom.vue")
-const roomSettings = () => import("./editors/roomSettings.vue")
+const taskAdder = () => import("./editors/addTask.vue"/* webpackChunkName: "taskAdder" */)
+const taskEditor = () => import("./editors/editTask.vue"/* webpackChunkName: "taskEditor" */)
+const roomAdder = () => import("./editors/addRoom.vue"/* webpackChunkName: "roomAdder" */)
+const roomEditor = () => import("./editors/editRoom.vue"/* webpackChunkName: "roomEditor" */)
+const roomSettings = () => import("./editors/roomSettings.vue"/* webpackChunkName: "roomSettings" */)
 
 export default {
     name: "overlay",
