@@ -8,16 +8,24 @@ module.exports = merge(common, {
   mode: 'production',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'prod_dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: [
+        use: [ 
         MiniCssExtractPlugin.loader,
         'css-loader'
         ]
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader",
+        ],
       },
     ]
   },

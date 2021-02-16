@@ -12,23 +12,15 @@ module.exports = {
         },
         {
             test: /\.js$/,
-            loader: 'babel-loader',
-            options: {
-            presets: [
-                '@babel/preset-env'
-            ]
-            }
-        },
-        {
-            test: /\.html$/,
-            use: 'html-loader'
+            exclude: /node_modules/,
+            loader: 'babel-loader'
         },
         {
             test: /\.svg$/,
             use: ['babel-loader', 'vue-svg-loader'],
         }
         ]
-    },
+},
     plugins: [
         new VueLoaderPlugin()
     ]

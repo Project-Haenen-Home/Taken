@@ -2,14 +2,16 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 var path = require('path');
 
 module.exports = {
+  target: "web",
   mode: 'development',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'dev'),
     port: 1000,
     hot: true,
     open: true,
     historyApiFallback: true
   },
+  devtool: "eval-source-map",
   module: {
     rules: [
       {
@@ -18,12 +20,8 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
-        options: {
-          presets: [
-            '@babel/preset-env'
-          ]
-        }
       },
       {
         test: /\.css$/,
@@ -33,19 +31,12 @@ module.exports = {
         ]
       },
       {
-        test: /\.html$/,
-        use: 'html-loader'
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[hash].[ext]',
-            outputPath: 'img',
-            esModule: false
-          }
-        }
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
       },
       {
         test: /\.svg$/,

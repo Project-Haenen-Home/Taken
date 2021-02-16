@@ -4,6 +4,6 @@ service taken stop
 
 npm run build
 cp ./server.js $targetDir/server.js
-cp ./prod_dist/* $targetDir/dist/
+cp ./dist/* $targetDir/dist/
 
 service taken restart
