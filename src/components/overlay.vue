@@ -8,21 +8,45 @@
             <roomAdder id="roomAdder" v-if="current == 'addRoom'" @close="closeOverlay" />
             <roomEditor id="roomEditor" v-if="current == 'editRoom'" @close="closeOverlay" :roomID="contentID" />
             <roomSettings id="roomSettings" v-if="current == 'roomSettings'" @close="closeOverlay" />
+            <div v-if="stat.loading" id="loader"><loader /></div>
         </div>
     </div>
 </template>
 
 <script>
 import closeIcon from "../assets/close.svg"
-const taskAdder = () => import("./editors/addTask.vue"/* webpackChunkName: "taskAdder" */)
-const taskEditor = () => import("./editors/editTask.vue"/* webpackChunkName: "taskEditor" */)
-const roomAdder = () => import("./editors/addRoom.vue"/* webpackChunkName: "roomAdder" */)
-const roomEditor = () => import("./editors/editRoom.vue"/* webpackChunkName: "roomEditor" */)
-const roomSettings = () => import("./editors/roomSettings.vue"/* webpackChunkName: "roomSettings" */)
+import loader from "./elements/loader.vue"
+
+let status = {loading: false};
+
+const taskAdder = () => {
+    status.loading = true;
+    return import("./editors/addTask.vue"/* webpackChunkName: "taskAdder" */).then((module) => {status.loading = false; return module});;
+}
+
+const taskEditor = () => {
+    status.loading = true;
+    return import("./editors/editTask.vue"/* webpackChunkName: "taskEditor" */).then((module) => {status.loading = false; return module});;
+}
+
+const roomAdder = () => {
+    status.loading = true;
+    return import("./editors/addRoom.vue"/* webpackChunkName: "roomAdder" */).then((module) => {status.loading = false; return module});;
+}
+
+const roomEditor = () => {
+    status.loading = true;
+    return import("./editors/editRoom.vue"/* webpackChunkName: "roomEditor" */).then((module) => {status.loading = false; return module});;
+}
+
+const roomSettings = () => {
+    status.loading = true;
+    return import("./editors/roomSettings.vue"/* webpackChunkName: "roomSettings" */).then((module) => {status.loading = false; return module});;
+}
 
 export default {
     name: "overlay",
-    components: { taskAdder, taskEditor, roomAdder, roomEditor, roomSettings, closeIcon },
+    components: { taskAdder, taskEditor, roomAdder, roomEditor, roomSettings, closeIcon, loader },
     props: ['current', 'contentID'],
     data() {
         return {
@@ -32,13 +56,15 @@ export default {
 
             showTaskAdd: false,
             showTaskEdit: false,
+            stat: status
         }
     },
+
     methods: {
         closeOverlay: function() {
             this.$root.$emit('openOverlay', '{ "overlay": "", "id": ""}');
         }  
-    }
+    },
 }
 </script>
 
@@ -77,6 +103,12 @@ export default {
             width: 50%;
             height: auto;
         }
+    }
+
+    #loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
      .logo {
