@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <span id="title">Taken @ HaenenHome</span>
+        <span id="title">{{title}}</span>
     </div>
 </template>
 
@@ -8,6 +8,7 @@
 
 export default {
     name: "titleBar",
+    props: ['title']
 }
 </script>
 

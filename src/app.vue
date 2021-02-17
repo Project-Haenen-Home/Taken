@@ -1,7 +1,7 @@
 <template>
     <div>
         <overlay id="overlay" v-if="showOverlay" :current="currentOverlay" :contentID="overlayID"  />
-        <titleBar />
+        <titleBar title="Taken @ HaenenHome" />
         <div id="content">
             <div id="main-content">
                 <filterBay />
