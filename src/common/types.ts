@@ -3,6 +3,13 @@ export interface PairIDName {
     name: string;
 }
 
+export interface Overlay {
+    id: string;
+    name: string;
+    mustReturn: boolean;
+    popOut: boolean;
+}
+
 export interface TaskFilter {
     personID: string[];
     roomID: string;

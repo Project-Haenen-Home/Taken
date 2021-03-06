@@ -1,13 +1,23 @@
 <template>
-    <div v-if="overlay.name != ''">
+    <div v-if="getOverlay.name != '' && !getOverlay.popOut">
         <div id="overlay" @click="closeOverlay"></div>
         <div id="content">
             <closeIcon class="logo clickable" @click="closeOverlay" />
-            <taskAdder id="taskAdder" v-if="overlay.name == 'addTask'" @close="closeOverlay" />
-            <taskEditor id="taskEditor" v-if="overlay.name == 'editTask'" @close="closeOverlay" :taskID="overlay._id" />
-            <roomAdder id="roomAdder" v-if="overlay.name == 'addRoom'" @close="closeOverlay" />
-            <roomEditor id="roomEditor" v-if="overlay.name == 'editRoom'" @close="closeOverlay" :roomID="overlay._id" />
-            <roomSettings id="roomSettings" v-if="overlay.name == 'roomSettings'" @close="closeOverlay" />
+            <taskAdder id="taskAdder" v-if="getOverlay.name == 'addTask'" @close="closeOverlay" />
+            <taskEditor
+                id="taskEditor"
+                v-if="getOverlay.name == 'editTask'"
+                @close="closeOverlay"
+                :taskID="getOverlay.id"
+            />
+            <roomAdder id="roomAdder" v-if="getOverlay.name == 'addRoom'" @close="closeOverlay" />
+            <roomEditor
+                id="roomEditor"
+                v-if="getOverlay.name == 'editRoom'"
+                @close="closeOverlay"
+                :roomID="getOverlay.id"
+            />
+            <roomSettings id="roomSettings" v-if="getOverlay.name == 'roomSettings'" @close="closeOverlay" />
             <!-- <div v-if="stat.loading" id="loader"><loader /></div> -->
         </div>
     </div>
@@ -15,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from "vue";
-import { mapMutations, mapState } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 import closeIcon from "@/assets/icons/close.svg";
 // import loader from "./elements/loader.vue";
@@ -70,12 +80,13 @@ export default defineComponent({
             stat: status
         };
     },
-    computed: mapState(["overlay"]),
+    computed: mapGetters(["getOverlay"]),
     methods: {
         closeOverlay: function() {
-            this.setOverlay({ _id: "", name: "" });
+            if (this.getOverlay.mustReturn) this.popOverlay();
+            else this.popAllOverlay();
         },
-        ...mapMutations(["setOverlay"])
+        ...mapMutations(["popOverlay", "popAllOverlay"])
     }
 });
 </script>

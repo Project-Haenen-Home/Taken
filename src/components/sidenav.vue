@@ -2,7 +2,10 @@
     <div class="side-nav">
         <div class="filter">
             <div class="filter-head">
-                Kamers<settingsIcon class="logo clickable" @click="setOverlay({ _id: '', name: 'roomSettings' })" />
+                Kamers<settingsIcon
+                    class="logo clickable"
+                    @click="pushOverlay({ id: '', name: 'roomSettings', popOut: false })"
+                />
             </div>
             <div class="filter-content">
                 <select id="room" v-model="taskFilter.roomID" style="margin-top: 5px" @change="fetchTasks()">
@@ -33,7 +36,7 @@
                         type="range"
                         class="slider"
                         id="dealineSlider"
-                        v-model="slider"
+                        v-model="deadSlider"
                         @mouseup="fetchTasks()"
                         @touchend="fetchTasks()"
                         min="1"
@@ -46,7 +49,7 @@
             <div
                 class="filter-head clickable"
                 style="margin-top: 20px"
-                @click="setOverlay({ _id: '', name: 'addTask' })"
+                @click="pushOverlay({ id: '', name: 'addTask', popOut: false })"
             >
                 Nieuwe taak<addIcon class="logo" />
             </div>
@@ -66,7 +69,6 @@ export default defineComponent({
     components: { addIcon, settingsIcon },
     data() {
         return {
-            slider: 0,
             room: "",
 
             filter: {
@@ -75,52 +77,39 @@ export default defineComponent({
             }
         };
     },
-    mounted() {
-        this.slider = this.deadSlider;
-    },
     computed: {
         deadComp: function(): string {
-            if (this.deadSlider == 1) {
-                this.setDayFilter(1);
-                return "1 dag";
-            }
-            if (this.deadSlider <= 6) {
-                this.setDayFilter(this.deadSlider);
-                return this.deadSlider + " dagen";
-            }
-            if (this.deadSlider == 7) {
-                this.setDayFilter(7);
-                return "1 week";
-            }
-            if (this.deadSlider <= 9) {
-                this.setDayFilter((Number(this.deadSlider) - 6) * 7);
-                return Number(this.deadSlider) - 6 + " weken";
-            }
-            if (this.deadSlider == 10) {
-                this.setDayFilter(30);
-                return "1 maand";
-            }
-            if (this.deadSlider == 11) {
-                this.setDayFilter(60);
-                return "2 maanden";
-            }
-            if (this.deadSlider == 12) {
-                this.setDayFilter(-1);
-                return "Alle taken";
-            }
-
-            return "";
+            if (this.deadSlider == 1) return "1 dag";
+            if (this.deadSlider <= 6) return this.deadSlider + " dagen";
+            if (this.deadSlider == 7) return "1 week";
+            if (this.deadSlider <= 9) return Number(this.deadSlider) - 6 + " weken";
+            if (this.deadSlider == 10) return "1 maand";
+            if (this.deadSlider == 11) return "2 maanden";
+            return "Alle taken";
         },
-        ...mapState(["deadSlider", "taskFilter", "people", "rooms"])
+        deadSlider: {
+            get: function(): number {
+                if (this.taskFilter.dayFilter <= 7) return this.taskFilter.dayFilter;
+                if (this.taskFilter.dayFilter <= 14) return 8;
+                if (this.taskFilter.dayFilter <= 21) return 9;
+                if (this.taskFilter.dayFilter <= 30) return 10;
+                if (this.taskFilter.dayFilter <= 60) return 11;
+                return 12;
+            },
+            set: function(value: number) {
+                if (value <= 7) this.setDayFilter(Number(value));
+                else if (value == 8) this.setDayFilter(14);
+                else if (value == 9) this.setDayFilter(21);
+                else if (value == 10) this.setDayFilter(30);
+                else if (value == 11) this.setDayFilter(60);
+                else this.setDayFilter(Number.MAX_SAFE_INTEGER);
+            }
+        },
+        ...mapState(["taskFilter", "people", "rooms"])
     },
     methods: {
-        ...mapMutations(["setOverlay", "setDayFilter", "setDeadSlider"]),
+        ...mapMutations(["pushOverlay", "setDayFilter", "setPersonFilter", "setRoomFilter"]),
         ...mapActions(["fetchTasks"])
-    },
-    watch: {
-        slider: function() {
-            this.setDeadSlider(this.slider);
-        }
     }
 });
 </script>

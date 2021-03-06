@@ -1,15 +1,13 @@
 import { InjectionKey } from "vue";
 import { createStore, useStore as baseUseStore, Store } from "vuex";
-import { Task, PairIDName, TaskFilter } from "../common/types";
+import { Task, PairIDName, TaskFilter, Overlay } from "../common/types";
 
 export interface RootState {
     tasks: Task[];
     rooms: PairIDName[];
     people: PairIDName[];
 
-    deadSlider: number;
-
-    overlay: PairIDName;
+    overlay: Overlay[];
     taskFilter: TaskFilter;
 }
 
@@ -25,10 +23,16 @@ export default createStore<RootState>({
         rooms: Array<PairIDName>(),
         people: Array<PairIDName>(),
 
-        deadSlider: 12,
+        overlay: Array<Overlay>(),
+        taskFilter: { personID: [], roomID: "0", dayFilter: Number.MAX_SAFE_INTEGER }
+    },
+    getters: {
+        getOverlay(state): Overlay {
+            const l = state.overlay.length;
+            if (l == 0) return { id: "", name: "", mustReturn: false, popOut: false };
 
-        overlay: { _id: "", name: "" },
-        taskFilter: { personID: [], roomID: "0", dayFilter: -1 }
+            return state.overlay[l - 1];
+        }
     },
     mutations: {
         setTasks(state, value: Task[]) {
@@ -40,21 +44,21 @@ export default createStore<RootState>({
         setPeople(state, value: PairIDName[]) {
             state.people = value;
         },
-        setOverlay(state, value: PairIDName) {
+        pushOverlay(state, value: Overlay) {
             console.log(value);
-            state.overlay = value;
+            if (value.mustReturn == undefined) value.mustReturn = false;
+            if (value.popOut == undefined) alert("Define popout");
+            state.overlay.push(value);
+            console.log(state.overlay[state.overlay.length - 1]);
+        },
+        popOverlay(state) {
+            console.log(state.overlay.pop());
+        },
+        popAllOverlay(state) {
+            state.overlay = [];
         },
         setDayFilter(state, value: number) {
             state.taskFilter.dayFilter = value;
-        },
-        setPersonFilter(state, value: string[]) {
-            state.taskFilter.personID = value;
-        },
-        setRoomFilter(state, value: string) {
-            state.taskFilter.roomID = value;
-        },
-        setDeadSlider(state, value: number) {
-            state.deadSlider = value;
         }
     },
     actions: {
@@ -64,14 +68,16 @@ export default createStore<RootState>({
             context.dispatch("fetchPeople");
         },
         fetchTasks(context) {
-            console.log(context.state.taskFilter);
             const taskFilter = context.state.taskFilter;
 
             let query = "";
             const qArr: string[] = [];
             if (taskFilter.personID.length > 0) qArr.push("personID=" + taskFilter.personID.join("|"));
+
             if (taskFilter.roomID != "" && taskFilter.roomID != "0") qArr.push("roomID=" + taskFilter.roomID);
-            if (taskFilter.dayFilter > 0) qArr.push("dayFilter=" + taskFilter.dayFilter);
+
+            if (taskFilter.dayFilter > 0 && taskFilter.dayFilter != Number.MAX_SAFE_INTEGER)
+                qArr.push("dayFilter=" + taskFilter.dayFilter);
 
             if (qArr.length > 0) query = "?" + qArr.join("&");
 
@@ -94,6 +100,13 @@ export default createStore<RootState>({
                 .then((data: PairIDName[]) => {
                     context.commit("setPeople", data);
                 });
+        },
+        deletePersonFilter(context, value: string) {
+            const index = context.state.taskFilter.personID.indexOf(value);
+            if (index > -1) {
+                context.state.taskFilter.personID.splice(index, 1);
+                context.dispatch("fetchTasks");
+            }
         }
     },
     modules: {}

@@ -1,12 +1,16 @@
 <template>
     <title-bar title="Taken @ HaenenHome" />
     <div id="main">
-        <div id="wrap">
-            <div id="taskContainer">
-                <task v-for="task in tasks" :key="task._id" :task="task" />
+        <div id="content">
+            <filter-bay id="filterBay" />
+            <div id="wrap">
+                <div id="taskContainer">
+                    <task v-for="task in tasks" :key="task._id" :task="task" />
+                </div>
             </div>
         </div>
         <sidenav id="sidenav" />
+        <lownav id="lownav" />
     </div>
     <overlay />
 </template>
@@ -15,14 +19,18 @@
 import { defineComponent } from "vue";
 import { mapState, mapActions } from "vuex";
 
-import titleBar from "./components/titleBar.vue";
-import task from "./components/task.vue";
-import sidenav from "./components/sidenav.vue";
-import overlay from "./components/overlay.vue";
+import titleBar from "@/components/titleBar.vue";
+import task from "@/components/task.vue";
+
+import lownav from "@/components/lownav.vue";
+import filterBay from "@/components/filterBay.vue";
+
+import overlay from "@/components/overlay.vue";
+import sidenav from "@/components/sidenav.vue";
 
 export default defineComponent({
     name: "App",
-    components: { titleBar, task, sidenav, overlay },
+    components: { titleBar, task, sidenav, overlay, lownav, filterBay },
     mounted() {
         this.fetchAll();
         setInterval(() => {
@@ -84,14 +92,20 @@ body {
     height: calc(100vh - 90px);
 }
 
+#content {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+}
+
 #sidenav {
+    display: none;
     width: 275px;
     padding: 20px 0 0 20px;
     border-left: 1px solid grey;
 }
 
 #wrap {
-    flex: 1;
     padding: 0 10px 0 10px;
     overflow-y: scroll;
 }
@@ -101,12 +115,26 @@ body {
     height: 10px;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 740px) {
     #taskContainer {
         padding: 0 20px 0 20px;
         display: grid;
         gap: 0 15px;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1150px) {
+    #filterBay {
+        display: none;
+    }
+
+    #lownav {
+        display: none;
+    }
+
+    #sidenav {
+        display: block;
     }
 }
 </style>

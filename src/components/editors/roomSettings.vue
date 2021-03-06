@@ -2,12 +2,16 @@
     <div id="roomSettings">
         <div id="header">
             <div id="title">Kamer instellingen</div>
-            <addIcon class="logo clickable" @click="openAdd" />
+            <addIcon class="logo clickable" @click="pushOverlay({ id: '', name: 'addRoom' })" />
         </div>
         <div id="rooms">
             <div v-for="room in rooms" :key="room._id" class="room">
                 <div>{{ room.name }}</div>
-                <editIcon class="logo clickable" style="margin-right: 5px" @click="openEdit(room._id)" />
+                <editIcon
+                    class="logo clickable"
+                    style="margin-right: 5px"
+                    @click="pushOverlay({ id: '', name: 'editRoom', popOut: false })"
+                />
             </div>
         </div>
     </div>
@@ -24,15 +28,7 @@ export default defineComponent({
     name: "roomSettings",
     components: { addIcon, editIcon },
     computed: mapState(["rooms"]),
-    methods: {
-        openAdd: function() {
-            this.setOverlay({ _id: "", name: "addRoom" });
-        },
-        openEdit: function(id: string) {
-            this.setOverlay({ _id: id, name: "editRoom" });
-        },
-        ...mapMutations(["setOverlay"])
-    }
+    methods: mapMutations(["pushOverlay"])
 });
 </script>
 

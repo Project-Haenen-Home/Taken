@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { PairIDName } from "@/common/types";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default defineComponent({
     name: "addRoom",
@@ -30,14 +30,15 @@ export default defineComponent({
     computed: {
         name: {
             get: function(): string {
-                if (this.curID != this.overlay._id) this.getRoom();
+                if (this.curID != this.getOverlay.id) this.getRoom();
                 return this.roomName;
             },
             set: function(value: string) {
                 this.roomName = value;
             }
         },
-        ...mapState(["overlay", "rooms"])
+        ...mapGetters(["getOverlay"]),
+        ...mapState(["rooms"])
     },
     methods: {
         editRoom: function() {
@@ -64,8 +65,8 @@ export default defineComponent({
             return obj?.name != undefined ? obj.name : "";
         },
         getRoom: function() {
-            this.name = this.idToName(this.overlay._id, this.rooms);
-            this.curID = this.overlay._id;
+            this.name = this.idToName(this.getOverlay.id, this.rooms);
+            this.curID = this.getOverlay.id;
         },
         ...mapActions(["fetchRooms"])
     }

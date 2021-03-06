@@ -8,7 +8,10 @@
                 </span>
                 <span class="logo-bay">
                     <!-- <analyzeIcon class="logo clickable" /> -->
-                    <settingsIcon class="logo clickable" @click="setOverlay({ _id: task._id, name: 'editTask' })" />
+                    <settingsIcon
+                        class="logo clickable"
+                        @click="pushOverlay({ id: task._id, name: 'editTask', popOut: false })"
+                    />
                 </span>
             </div>
             <div class="under-title">
@@ -107,7 +110,7 @@ export default defineComponent({
             }
         },
         ...mapActions(["fetchTasks"]),
-        ...mapMutations(["setOverlay"])
+        ...mapMutations(["pushOverlay"])
     }
 });
 </script>

@@ -1,7 +1,5 @@
 <template>
-    <div id="header">
-        <span id="title">{{ title }}</span>
-    </div>
+    <div id="header">{{ title }}</div>
 </template>
 
 <script lang="ts">
@@ -16,14 +14,23 @@ export default defineComponent({
 <style lang="scss" scoped>
 #header {
     background-color: $primary;
-    padding: 20px;
-    height: 90px;
-}
+    padding: 20px 0;
 
-#title {
-    font-size: 40px;
+    width: 100vw;
+    text-align: center;
+    font-size: 30px;
     font-weight: 700;
     font-family: "Raleway", sans-serif;
     color: $titleColor;
+}
+
+@media only screen and (min-width: 700px) {
+    #header {
+        padding: 20px;
+        height: 90px;
+    
+        font-size: 40px;
+        text-align: start;
+    }
 }
 </style>

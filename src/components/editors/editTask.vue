@@ -52,7 +52,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { PairIDName, Task } from "@/common/types";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import deleteIcon from "@/assets/icons/delete.svg";
 
@@ -68,7 +68,7 @@ export default defineComponent({
     computed: {
         name: {
             get: function(): string {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.name;
             },
             set: function(value: string) {
@@ -77,7 +77,7 @@ export default defineComponent({
         },
         person: {
             get: function(): string {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.personID;
             },
             set: function(value: string) {
@@ -86,7 +86,7 @@ export default defineComponent({
         },
         rotate: {
             get: function(): boolean {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.rotate != undefined ? this.task.rotate : false;
             },
             set: function(value: boolean) {
@@ -95,7 +95,7 @@ export default defineComponent({
         },
         room: {
             get: function(): string {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.roomID;
             },
             set: function(value: string) {
@@ -104,7 +104,7 @@ export default defineComponent({
         },
         period: {
             get: function(): number {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.period;
             },
             set: function(value: number) {
@@ -113,20 +113,21 @@ export default defineComponent({
         },
         comment: {
             get: function(): string {
-                if (this.curID != this.overlay._id) this.getTask();
+                if (this.curID != this.getOverlay.id) this.getTask();
                 return this.task.comment != undefined ? this.task.comment : "";
             },
             set: function(value: string) {
                 this.task.comment = value;
             }
         },
-        ...mapState(["tasks", "rooms", "people", "overlay"])
+        ...mapGetters(["getOverlay"]),
+        ...mapState(["tasks", "rooms", "people"])
     },
     methods: {
         getTask: function() {
             for (let i = 0; i < this.tasks.length; i++) {
-                if (this.tasks[i]._id == this.overlay._id) {
-                    this.curID = this.overlay._id;
+                if (this.tasks[i]._id == this.getOverlay.id) {
+                    this.curID = this.getOverlay.id;
                     this.task = { ...this.tasks[i] };
                     break;
                 }
