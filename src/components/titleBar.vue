@@ -28,7 +28,7 @@ export default defineComponent({
     #header {
         padding: 20px;
         height: 90px;
-    
+
         font-size: 40px;
         text-align: start;
     }
