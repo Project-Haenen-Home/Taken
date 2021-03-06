@@ -11,7 +11,7 @@
                 <td>
                     <select id="person" v-model="person"
                         ><option selected value="0" hidden>Kies een persoon...</option
-                        ><option v-for="person in DBStore.people" v-bind:key="person._id" v-bind:value="person._id">{{
+                        ><option v-for="person in people" v-bind:key="person._id" v-bind:value="person._id">{{
                             person.name
                         }}</option></select
                     >
@@ -26,7 +26,7 @@
                 <td>
                     <select id="room" v-model="room"
                         ><option selected value="0" hidden>Kies een kamer...</option
-                        ><option v-for="room in DBStore.rooms" v-bind:key="room._id" v-bind:value="room._id">{{
+                        ><option v-for="room in rooms" v-bind:key="room._id" v-bind:value="room._id">{{
                             room.name
                         }}</option></select
                     >
@@ -103,7 +103,7 @@ export default defineComponent({
         },
         ...mapActions(["fetchTasks"])
     },
-    computed: mapState(["people"])
+    computed: mapState(["people", "rooms"])
 });
 </script>
 

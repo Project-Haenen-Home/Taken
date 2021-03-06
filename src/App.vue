@@ -1,9 +1,12 @@
 <template>
     <title-bar title="Taken @ HaenenHome" />
-    <div id="wrap">
-        <div id="taskContainer">
-            <task v-for="task in tasks" :key="task._id" :task="task" />
+    <div id="main">
+        <div id="wrap">
+            <div id="taskContainer">
+                <task v-for="task in tasks" :key="task._id" :task="task" />
+            </div>
         </div>
+        <sidenav id="sidenav" />
     </div>
     <overlay />
 </template>
@@ -14,11 +17,12 @@ import { mapState, mapActions } from "vuex";
 
 import titleBar from "./components/titleBar.vue";
 import task from "./components/task.vue";
+import sidenav from "./components/sidenav.vue";
 import overlay from "./components/overlay.vue";
 
 export default defineComponent({
     name: "App",
-    components: { titleBar, task, overlay },
+    components: { titleBar, task, sidenav, overlay },
     mounted() {
         this.fetchAll();
         setInterval(() => {
@@ -75,9 +79,20 @@ body {
 </style>
 
 <style lang="scss" scoped>
-#wrap {
-    padding: 0 10px 0 10px;
+#main {
+    display: flex;
     height: calc(100vh - 90px);
+}
+
+#sidenav {
+    width: 275px;
+    padding: 20px 0 0 20px;
+    border-left: 1px solid grey;
+}
+
+#wrap {
+    flex: 1;
+    padding: 0 10px 0 10px;
     overflow-y: scroll;
 }
 

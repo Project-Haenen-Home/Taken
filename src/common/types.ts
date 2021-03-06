@@ -3,6 +3,12 @@ export interface PairIDName {
     name: string;
 }
 
+export interface TaskFilter {
+    personID: string[];
+    roomID: string;
+    dayFilter: number;
+}
+
 export interface Task {
     _id: string;
     name: string;
