@@ -49,10 +49,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import { PairIDName, Task } from "@/common/types";
 
-export default {
+export default defineComponent({
     name: "addTask",
     data() {
         return {
@@ -103,7 +104,7 @@ export default {
         ...mapActions(["fetchTasks"])
     },
     computed: mapState(["people"])
-};
+});
 </script>
 
 <style scoped>

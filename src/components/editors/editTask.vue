@@ -50,12 +50,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { PairIDName, Task } from "@/common/types";
 import { mapActions, mapState } from "vuex";
 
 import deleteIcon from "@/assets/icons/delete.svg";
 
-export default {
+export default defineComponent({
     name: "editTask",
     components: { deleteIcon },
     data() {
@@ -180,7 +181,7 @@ export default {
         },
         ...mapActions(["fetchTasks"])
     }
-};
+});
 </script>
 
 <style scoped>

@@ -4,19 +4,9 @@
         <div id="content">
             <closeIcon class="logo clickable" @click="closeOverlay" />
             <taskAdder id="taskAdder" v-if="overlay.name == 'addTask'" @close="closeOverlay" />
-            <taskEditor
-                id="taskEditor"
-                v-if="overlay.name == 'editTask'"
-                @close="closeOverlay"
-                :taskID="overlay._id"
-            />
+            <taskEditor id="taskEditor" v-if="overlay.name == 'editTask'" @close="closeOverlay" :taskID="overlay._id" />
             <roomAdder id="roomAdder" v-if="overlay.name == 'addRoom'" @close="closeOverlay" />
-            <roomEditor
-                id="roomEditor"
-                v-if="overlay.name == 'editRoom'"
-                @close="closeOverlay"
-                :roomID="overlay._id"
-            />
+            <roomEditor id="roomEditor" v-if="overlay.name == 'editRoom'" @close="closeOverlay" :roomID="overlay._id" />
             <roomSettings id="roomSettings" v-if="overlay.name == 'roomSettings'" @close="closeOverlay" />
             <!-- <div v-if="stat.loading" id="loader"><loader /></div> -->
         </div>
@@ -78,14 +68,14 @@ export default defineComponent({
     data() {
         return {
             stat: status
-        }
+        };
     },
-    computed: mapState(['overlay']),
+    computed: mapState(["overlay"]),
     methods: {
         closeOverlay: function() {
-            this.setOverlay({ _id: "", name: ""})
+            this.setOverlay({ _id: "", name: "" });
         },
-        ...mapMutations(['setOverlay'])
+        ...mapMutations(["setOverlay"])
     }
 });
 </script>

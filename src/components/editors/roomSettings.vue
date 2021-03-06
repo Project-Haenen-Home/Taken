@@ -14,12 +14,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { mapMutations, mapState } from "vuex";
 
 import addIcon from "@/assets/icons/add.svg";
 import editIcon from "@/assets/icons/pen.svg";
 
-export default {
+export default defineComponent({
     name: "roomSettings",
     components: { addIcon, editIcon },
     computed: mapState(["rooms"]),
@@ -32,7 +33,7 @@ export default {
         },
         ...mapMutations(["setOverlay"])
     }
-};
+});
 </script>
 
 <style>

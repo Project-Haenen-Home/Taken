@@ -15,9 +15,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 
-export default {
+export default defineComponent({
     name: "addRoom",
     data() {
         return {
@@ -46,7 +47,7 @@ export default {
         },
         ...mapActions(["fetchRooms"])
     }
-};
+});
 </script>
 
 <style scoped>
