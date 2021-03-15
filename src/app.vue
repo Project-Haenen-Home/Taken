@@ -1,127 +1,122 @@
 <template>
-    <div>
-        <overlay id="overlay" v-if="showOverlay" :current="currentOverlay" :contentID="overlayID"  />
-        <titleBar title="Taken @ HaenenHome" />
+    <title-bar title="Taken @ HaenenHome" />
+    <div id="main">
         <div id="content">
-            <div id="main-content">
-                <filterBay />
-                <tasks />
+            <!-- <filter-bay id="filterBay" /> -->
+            <div id="wrap">
+                <div id="taskContainer">
+                    <room v-for="room in rooms" :key="room.id" :room="room" />
+                    <!-- <task v-for="task in tasks" :key="task.id" :task="task" /> -->
+                </div>
             </div>
-            <sidenav id="side-nav" />
         </div>
-        <lownav id="low-nav" :current="currentPopOut"/>
+        <!-- <sidenav id="sidenav" /> -->
+        <!-- <lownav id="lownav" /> -->
     </div>
+    <div id="background"></div>
 </template>
 
-<script>
-import filterBay from "./components/filterBay.vue"
-import lownav from "./components/lownav.vue"
-import DBStore from "./stores/DBStore"
-import titleBar from "./components/titleBar.vue"
-import tasks from "./components/listTasks.vue"
+<script lang="ts">
+import { defineComponent } from "vue";
+import titleBar from "@c/titleBar.vue";
+import task from "@c/task.vue";
+import room from "@c/room.vue";
 
-const sidenav = () => import("./components/sidenav.vue"/* webpackChunkName: "sidenav" */)
-const overlay = () => import("./components/overlay.vue"/* webpackChunkName: "overlay" */)
+// import * as z from "zod";
+import { jsonParseNXT, Room, Task } from "@/typedefs";
 
-export default {
+export default defineComponent({
     name: "App",
-    components: { tasks, overlay, titleBar, sidenav, lownav, filterBay },
+    components: { titleBar, task, room },
     data() {
         return {
-            showOverlay: false,
-            currentOverlay: "",
-            overlayID: "",
-            currentPopOut: "",
-
-            DBStore: DBStore.data
+            rooms: Array<Room>(),
         };
     },
     created() {
-        DBStore.methods.getAll();
+        const fetchRooms = () => {
+            fetch("http://wolleserver.local:2610/rooms/taskStats")
+                .then((resp) => resp.text())
+                .then((json: string) => {
+                    this.rooms = jsonParseNXT(json);
+                });
+        };
+
+        fetchRooms();
     },
-    mounted() {
-        this.$root.$on('openOverlay', (data) => {
-            const j = JSON.parse(data);
-
-            if(j.overlay != "") this.showOverlay = true;
-            else this.showOverlay = false;
-
-            this.overlayID = j.id;
-            this.currentOverlay = j.overlay;
-        })
-        this.$root.$on('openPopOut', (data) => {
-            this.currentPopOut = data;
-        })
-    }
-};
+});
 </script>
 
-<style>
-    * {
-        box-sizing: border-box;
-        font-family: 'Montserrat', sans-serif;
-    }  
-
-    body {
-        margin: 0;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    .clickable {
-        cursor: pointer;
-    }
-
-     /* scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    /* Track */
-    ::-webkit-scrollbar-track {
-        background: #f1f1f1; 
-    }
-    
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: #888; 
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #555; 
-    }
+<style lang="scss">
+@import url("@s/common.css");
 </style>
 
-<style scoped>
-    #content {
-        display: flex;
-        width: 100%;
-        height: calc(100vh - 90px);
-    }
+<style lang="scss" scoped>
+#main {
+    display: flex;
+    height: calc(100vh - 90px);
+}
 
-    #main-content {
-        width: 100%;
-        height: inherit;
-        overflow-y: scroll;
-    }
+#content {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+}
 
-    #side-nav {
+#sidenav {
+    display: none;
+    width: 275px;
+    padding: 20px 0 0 20px;
+    border-left: 1px solid grey;
+}
+
+#wrap {
+    padding: 0 10px 0 10px;
+    overflow-y: scroll;
+}
+
+#wrap::after {
+    content: " ";
+    height: 30px;
+    display: block;
+}
+
+@media only screen and (min-width: 740px) {
+    #taskContainer {
+        padding: 0 20px 0 20px;
+        display: grid;
+        gap: 0 15px;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1150px) {
+    #filterBay {
         display: none;
     }
 
-    @media only screen and (min-width: 1025px) {
-        #side-nav {
-            display: block;
-            padding: 20px 0 0 20px;
-            border-left: 1px solid grey;
-            min-width: 275px;
-        }
-
-        #low-nav {
-            display: none;
-        }
+    #lownav {
+        display: none;
     }
+
+    #sidenav {
+        display: block;
+    }
+}
+
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-image: linear-gradient(
+        180deg,
+        #2f6ed3 5%,
+        #5095e4 20%,
+        #5095e4 60%,
+        #2f6ed3 95%
+    );
+}
 </style>
