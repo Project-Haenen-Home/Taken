@@ -72,6 +72,7 @@ export default defineComponent({
 #wrap {
 	padding: 0 10px 0 10px;
 	overflow-y: scroll;
+	flex: 1 1 auto;
 }
 
 #wrap::after {

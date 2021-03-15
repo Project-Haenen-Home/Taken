@@ -1,6 +1,4 @@
-dist/*.js
-dist/*.css
-dist/*.LICENSE.txt
+dist
 package-lock.json
 
 # Logs
