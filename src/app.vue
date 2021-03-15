@@ -4,7 +4,7 @@
 		<div id="content">
 			<!-- <filter-bay id="filterBay" /> -->
 			<div id="wrap">
-				<div id="taskContainer">
+				<div id="roomContainer">
 					<room v-for="room in rooms" :key="room.id" :room="room" />
 					<!-- <task v-for="task in tasks" :key="task.id" :task="task" /> -->
 				</div>
@@ -22,7 +22,6 @@ import titleBar from "@c/titleBar.vue";
 import task from "@c/task.vue";
 import room from "@c/room.vue";
 
-// import * as z from "zod";
 import { jsonParseNXT, Room, Task } from "@/typedefs";
 
 export default defineComponent({
@@ -82,7 +81,7 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 740px) {
-	#taskContainer {
+	#roomContainer {
 		padding: 0 20px 0 20px;
 		display: grid;
 		gap: 0 15px;
