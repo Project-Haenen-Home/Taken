@@ -35,7 +35,7 @@ export default defineComponent({
     },
     created() {
         const fetchRooms = () => {
-            fetch("http://wolleserver.local:2610/rooms/taskStats")
+            fetch("http://wolleserver.local:2600/api/rooms/taskStats")
                 .then((resp) => resp.text())
                 .then((json: string) => {
                     this.rooms = jsonParseNXT(json);
