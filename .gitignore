@@ -1,4 +1,6 @@
-dist
+dist/*.js
+dist/*.css
+dist/*.LICENSE.txt
 
 # Logs
 logs
