@@ -17,10 +17,10 @@
 			</div>
 			<div class="under-title">
 				<span>{{ task.person }}</span>
-				<span>-</span>
+				<span>&nbsp;-&nbsp;</span>
 				<span>{{ task.room }}</span>
 				<span v-if="task.comment != ''">
-					<span>-</span>
+					<span>&nbsp;-&nbsp;</span>
 					<span>
 						Notitie...
 						<span

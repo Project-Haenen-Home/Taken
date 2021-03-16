@@ -1,5 +1,6 @@
 import Home from "@v/home.vue";
-import Room from "@v/room.vue";
+import { defineAsyncComponent } from "vue";
+const Room = defineAsyncComponent(() => import("@v/room.vue"));
 
 export default [
 	{
