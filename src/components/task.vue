@@ -12,15 +12,15 @@
 				</span>
 				<span class="logo-bay">
 					<!-- <analyzeIcon class="logo clickable" /> -->
-					<settingsIcon class="logo clickable" @click="" />
+					<settingsIcon class="logo clickable" />
 				</span>
 			</div>
 			<div class="under-title">
 				<span>{{ task.person }}</span>
-				<span>&nbsp;-&nbsp;</span>
+				<span>-</span>
 				<span>{{ task.room }}</span>
 				<span v-if="task.comment != ''">
-					<span>&nbsp;-&nbsp;</span>
+					<span>-</span>
 					<span>
 						Notitie...
 						<span
@@ -50,7 +50,7 @@
 			</div>
 
 			<div class="finishItem">
-				<div class="finishButton clickable" @click="">Gedaan!</div>
+				<div class="finishButton clickable">Gedaan!</div>
 			</div>
 		</div>
 	</div>
