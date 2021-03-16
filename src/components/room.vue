@@ -16,7 +16,7 @@
 				<span>{{ room.numExpired }}</span>
 				<span>
 					<crit-icon
-						class="icon"
+						class="icon dropShadow"
 						style="fill: rgba(219, 26, 26, 0.8)"
 					/>
 				</span>
@@ -25,14 +25,16 @@
 				<span>{{ room.numDue }}</span>
 				<span>
 					<crit-icon
-						class="icon"
+						class="icon dropShadow"
 						style="fill: rgba(236, 215, 32, 0.863)"
 					/>
 				</span>
 			</span>
 		</div>
 		<div class="enterField">
-			<div class="enterButton clickable">Betreed</div>
+			<router-link :to="`/room/${room.id}`" class="noDeco">
+				<div class="enterButton clickable">Betreed</div>
+			</router-link>
 		</div>
 		<settingsIcon class="icon clickable settings" />
 	</div>
@@ -87,16 +89,24 @@ export default defineComponent({
 
 	width: $wh;
 	height: $wh;
+}
 
-	-webkit-filter: drop-shadow(1px 3px 2px rgba(135, 31, 31, 0.527));
-	filter: drop-shadow(1px 3px 2px rgba(135, 31, 31, 0.295));
+.icon.dropShadow {
+	-webkit-filter: drop-shadow(1px 3px 2px rgba(135, 86, 31, 0.295));
+	filter: drop-shadow(1px 3px 2px rgba(135, 86, 31, 0.295));
 }
 
 .icon.settings {
+	$wh: 24px;
+
+	width: $wh;
+	height: $wh;
+
 	position: absolute;
 	top: 10px;
 	right: 15px;
-	fill: white;
+	stroke: #e8f1f8;
+	fill: #e8f1f8;
 }
 
 .stats {
