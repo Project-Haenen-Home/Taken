@@ -1,9 +1,7 @@
 <template>
-	<div class="content">
-		<div class="wrap">
-			<div id="roomContainer">
-				<room v-for="room in rooms" :key="room.id" :room="room" />
-			</div>
+	<div class="wrap">
+		<div id="roomContainer">
+			<room v-for="room in rooms" :key="room.id" :room="room" />
 		</div>
 	</div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<div class="room">
+	<div class="room glass">
 		<div class="title">{{ room.name }}</div>
 		<div class="under-title">
 			Deelnemers:
@@ -33,7 +33,7 @@
 		</div>
 		<div class="enterField">
 			<router-link :to="`/room/${room.id}`" class="noDeco">
-				<div class="enterButton clickable">Betreed</div>
+				<div class="glassButton clickable">Betreed</div>
 			</router-link>
 		</div>
 		<settingsIcon class="icon clickable settings" />
@@ -56,11 +56,6 @@ export default defineComponent({
 <style lang="scss">
 .room {
 	position: relative;
-	background: rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
 	border-radius: 10px;
 
 	padding: 15px;
@@ -154,31 +149,5 @@ export default defineComponent({
 			}
 		}
 	}
-}
-
-.enterButton {
-	background: rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
-
-	color: white;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	// background-color: linen;
-
-	// height: 90%;
-	height: 50px;
-
-	width: 120px;
-	// width: 90%;
-	// min-width: 80px;
-	// max-width: 150px;
-
-	-webkit-user-select: none;
-	user-select: none;
 }
 </style>

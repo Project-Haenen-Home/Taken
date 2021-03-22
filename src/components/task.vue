@@ -1,5 +1,5 @@
 <template>
-	<div class="task">
+	<div class="task glass">
 		<div class="header">
 			<div class="title-bay">
 				<span style="display: flex">
@@ -50,7 +50,7 @@
 			</div>
 
 			<div class="finishItem">
-				<div class="finishButton clickable">Gedaan!</div>
+				<div class="glassButton clickable">Gedaan!</div>
 			</div>
 		</div>
 	</div>
@@ -115,12 +115,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .task {
-	background: rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
 	border-radius: 10px;
+	color: darkslategray;
 
 	padding: 15px;
 	margin: 10px 0;
@@ -139,9 +135,8 @@ export default defineComponent({
 	justify-content: flex-start;
 	font-size: 24px;
 	font-weight: bold;
-	font-family: "Raleway", sans-serif;
+	font-family: "Noto Sans JP", sans-serif;
 	max-width: calc(100% - 80px);
-	color: $titleColor;
 }
 
 .logo-bay {
@@ -186,31 +181,5 @@ export default defineComponent({
 	align-items: center;
 	justify-content: flex-end;
 	margin-right: 20px;
-}
-
-.finishButton {
-	background: rgba(255, 255, 255, 0.25);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-	-webkit-backdrop-filter: blur(4px);
-	backdrop-filter: blur(4px);
-	border: 1px solid rgba(255, 255, 255, 0.18);
-
-	// border: 2px solid;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	// background-color: linen;
-
-	// height: 90%;
-	height: 80px;
-
-	width: 120px;
-	// width: 90%;
-	// min-width: 80px;
-	// max-width: 150px;
-
-	-webkit-user-select: none;
-	user-select: none;
 }
 </style>

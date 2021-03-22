@@ -1,10 +1,8 @@
 <template>
-	<div class="content">
+	<div class="wrap">
 		<div id="roomName">{{ room.name }}</div>
-		<div class="wrap">
-			<div id="taskContainer">
-				<task v-for="task in tasks" :key="task.id" :task="task" />
-			</div>
+		<div id="taskContainer">
+			<task v-for="task in tasks" :key="task.id" :task="task" />
 		</div>
 	</div>
 </template>
@@ -47,6 +45,7 @@ export default defineComponent({
 	color: $titleColor;
 	font-size: 28px;
 	font-weight: bold;
+	font-family: "Noto Sans JP", sans-serif;
 	margin: 15px 0 2.5px 10px;
 }
 
@@ -55,7 +54,7 @@ export default defineComponent({
 		padding: 0 20px 0 20px;
 		display: grid;
 		gap: 0 15px;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
 	}
 }
 </style>

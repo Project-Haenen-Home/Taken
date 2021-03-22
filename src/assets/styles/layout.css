@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+    background-color: #2f6ed3;
+    overflow: hidden;
+}
+
+.wrap {
+	padding: 0 10px 0 10px;
+	overflow-y: scroll;
+	flex: 1 1 auto;
+}
+
+.wrap::after {
+	content: " ";
+	height: 30px;
+	display: block;
+}
